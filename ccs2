@@ -1,0 +1,1496 @@
+/* ==========================================================================
+   Planeador de Comida y Despensa — Estilos puros en CSS
+   Sistema de diseño limpio, responsivo y con variables para colores.
+   ========================================================================== */
+
+:root {
+  /* Paleta neutra (60% fondo, 30% superficies y bordes) */
+  --color-fondo: #f7f8f7;
+  --color-superficie: #ffffff;
+  --color-superficie-alt: #f1f4f2;
+  --color-borde: #dfe5e1;
+  --color-borde-fuerte: #c5d0c9;
+
+  /* Tipografía */
+  --color-texto: #142019;
+  --color-texto-secundario: #4b5c52;
+  --color-texto-suave: #66786d;
+
+  /* Acento principal (10% del presupuesto visual) */
+  --color-primario: #1b6b4a;
+  --color-primario-hover: #145339;
+  --color-primario-suave: #ebf6f0;
+
+  /* Colores semánticos (siempre acompañados de texto explícito) */
+  --color-exito: #157347;
+  --color-exito-fondo: #edf8f2;
+  --color-aviso: #a15c07;
+  --color-aviso-fondo: #fef7eb;
+  --color-peligro: #b42318;
+  --color-peligro-fondo: #fef2f2;
+
+  /* Fuentes */
+  --fuente-titulos: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+  --fuente-cuerpo: "DM Sans", system-ui, -apple-system, sans-serif;
+
+  /* Radios y espaciado */
+  --radio-chico: 6px;
+  --radio-medio: 10px;
+  --radio-grande: 14px;
+  --transicion: 160ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Reinicio básico */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--fuente-cuerpo);
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--color-texto);
+  background-color: var(--color-fondo);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  margin: 0;
+  font-family: var(--fuente-titulos);
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--color-texto);
+  text-wrap: balance;
+}
+
+p {
+  margin: 0;
+}
+
+button,
+input,
+select {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-primario);
+  outline-offset: 2px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.oculto {
+  display: none !important;
+}
+
+.numero {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Contenedor principal */
+.contenedor {
+  width: 100%;
+  max-width: 1180px;
+  margin-inline: auto;
+  padding-inline: 20px;
+}
+
+/* ==========================================================================
+   Barra superior (3 zonas en una sola línea)
+   ========================================================================== */
+.barra-superior {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background-color: var(--color-superficie);
+  border-bottom: 1px solid var(--color-borde);
+}
+
+.barra-superior__interior {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  min-height: 64px;
+}
+
+.marca {
+  font-family: var(--fuente-titulos);
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--color-texto);
+  text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.navegacion {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.navegacion__enlace {
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: var(--color-texto-secundario);
+  text-decoration: none;
+  padding-block: 6px;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: color var(--transicion), border-color var(--transicion);
+}
+
+.navegacion__enlace:hover,
+.navegacion__enlace.activo {
+  color: var(--color-texto);
+  border-bottom-color: var(--color-primario);
+}
+
+/* ==========================================================================
+   Botones
+   ========================================================================== */
+.boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 9px 18px;
+  border-radius: var(--radio-chico);
+  border: 1px solid transparent;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background-color var(--transicion), border-color var(--transicion), color var(--transicion), transform var(--transicion);
+}
+
+.boton:active {
+  transform: translateY(1px);
+}
+
+.boton--primario {
+  background-color: var(--color-primario);
+  color: #ffffff;
+}
+
+.boton--primario:hover {
+  background-color: var(--color-primario-hover);
+}
+
+.boton--secundario {
+  background-color: var(--color-superficie);
+  color: var(--color-texto);
+  border-color: var(--color-borde-fuerte);
+}
+
+.boton--secundario:hover {
+  background-color: var(--color-superficie-alt);
+}
+
+.boton--texto {
+  background-color: transparent;
+  color: var(--color-texto-secundario);
+  padding-inline: 10px;
+}
+
+.boton--texto:hover {
+  color: var(--color-texto);
+  background-color: var(--color-superficie-alt);
+}
+
+.boton--chico {
+  min-height: 34px;
+  padding: 6px 12px;
+  font-size: 0.82rem;
+}
+
+/* ==========================================================================
+   Contenido principal y Panel de presupuesto
+   ========================================================================== */
+.contenido-principal {
+  padding-block: 24px 56px;
+}
+
+.panel-resumen {
+  background-color: var(--color-superficie);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-grande);
+  padding: 20px 24px;
+  margin-bottom: 20px;
+}
+
+.panel-resumen__metricas {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.metrica {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.metrica__etiqueta {
+  font-size: 0.8rem;
+  color: var(--color-texto-suave);
+}
+
+.metrica__valor {
+  font-family: var(--fuente-titulos);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--color-texto);
+}
+
+.metrica__valor--exito {
+  color: var(--color-exito);
+}
+
+.metrica__valor--peligro {
+  color: var(--color-peligro);
+}
+
+.barra-progreso-contenedor {
+  width: 100%;
+  height: 8px;
+  background-color: var(--color-superficie-alt);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.barra-progreso__relleno {
+  height: 100%;
+  width: 0%;
+  background-color: var(--color-primario);
+  border-radius: 999px;
+  transition: width 260ms ease, background-color 200ms ease;
+}
+
+.barra-progreso__relleno--aviso {
+  background-color: var(--color-aviso);
+}
+
+.barra-progreso__relleno--peligro {
+  background-color: var(--color-peligro);
+}
+
+.alerta-presupuesto {
+  font-size: 0.9rem;
+  padding: 10px 14px;
+  border-radius: var(--radio-chico);
+  background-color: var(--color-superficie-alt);
+  color: var(--color-texto-secundario);
+}
+
+.alerta-presupuesto--exito {
+  background-color: var(--color-exito-fondo);
+  color: var(--color-exito);
+}
+
+.alerta-presupuesto--aviso {
+  background-color: var(--color-aviso-fondo);
+  color: var(--color-aviso);
+}
+
+.alerta-presupuesto--peligro {
+  background-color: var(--color-peligro-fondo);
+  color: var(--color-peligro);
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   Pestañas de secciones
+   ========================================================================== */
+.pestanas {
+  display: flex;
+  gap: 6px;
+  padding: 5px;
+  background-color: var(--color-superficie-alt);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-medio);
+  margin-bottom: 24px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.pestana {
+  flex: 1 0 auto;
+  min-height: 40px;
+  padding: 8px 14px;
+  border: none;
+  border-radius: var(--radio-chico);
+  background: transparent;
+  color: var(--color-texto-secundario);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color var(--transicion), color var(--transicion);
+}
+
+.pestana:hover {
+  color: var(--color-texto);
+}
+
+.pestana.activa {
+  background-color: var(--color-superficie);
+  color: var(--color-texto);
+  box-shadow: 0 1px 2px rgba(20, 32, 25, 0.08);
+}
+
+/* ==========================================================================
+   Secciones y encabezados
+   ========================================================================== */
+.seccion-vista {
+  display: none;
+}
+
+.seccion-vista.activa {
+  display: block;
+}
+
+.encabezado-seccion {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 22px;
+  flex-wrap: wrap;
+}
+
+.titulo-seccion {
+  font-size: 1.55rem;
+  margin-bottom: 6px;
+}
+
+.descripcion-seccion {
+  color: var(--color-texto-secundario);
+  max-width: 68ch;
+  font-size: 0.94rem;
+}
+
+.acciones-seccion {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* ==========================================================================
+   Sección 1: Formulario de familia y presupuesto
+   ========================================================================== */
+.formulario-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  background-color: var(--color-superficie);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-grande);
+  padding: 24px;
+}
+
+.bloque-campo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.bloque-campo--completo {
+  grid-column: 1 / -1;
+}
+
+.etiqueta-campo {
+  font-weight: 600;
+  font-size: 0.92rem;
+  color: var(--color-texto);
+}
+
+.etiqueta-secundaria {
+  font-size: 0.84rem;
+  color: var(--color-texto-secundario);
+  margin-top: 8px;
+}
+
+.ayuda-campo {
+  font-size: 0.82rem;
+  color: var(--color-texto-suave);
+}
+
+input[type="text"],
+input[type="number"],
+select {
+  width: 100%;
+  min-height: 42px;
+  padding: 9px 12px;
+  border: 1px solid var(--color-borde-fuerte);
+  border-radius: var(--radio-chico);
+  background-color: var(--color-superficie);
+  color: var(--color-texto);
+  transition: border-color var(--transicion);
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+select:focus {
+  border-color: var(--color-primario);
+  outline: none;
+}
+
+.campo-prefijo {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--color-borde-fuerte);
+  border-radius: var(--radio-chico);
+  background-color: var(--color-superficie);
+  overflow: hidden;
+}
+
+.campo-prefijo:focus-within {
+  border-color: var(--color-primario);
+}
+
+.campo-prefijo input {
+  border: none;
+  min-height: 40px;
+}
+
+.campo-prefijo__simbolo,
+.campo-prefijo__sufijo {
+  padding-inline: 12px;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--color-texto-suave);
+  background-color: var(--color-superficie-alt);
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+}
+
+.opciones-rapidas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.boton-opcion {
+  min-height: 34px;
+  padding: 5px 12px;
+  border: 1px solid var(--color-borde-fuerte);
+  border-radius: var(--radio-chico);
+  background-color: var(--color-superficie);
+  color: var(--color-texto-secundario);
+  font-size: 0.84rem;
+  cursor: pointer;
+  transition: background-color var(--transicion), border-color var(--transicion), color var(--transicion);
+}
+
+.boton-opcion:hover {
+  border-color: var(--color-primario);
+  color: var(--color-texto);
+}
+
+.boton-opcion.seleccionado {
+  background-color: var(--color-primario-suave);
+  border-color: var(--color-primario);
+  color: var(--color-primario);
+  font-weight: 600;
+}
+
+.grupo-opciones {
+  border: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.rejilla-checks {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 10px;
+}
+
+.check-caja {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 40px;
+  padding: 8px 12px;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-chico);
+  background-color: var(--color-superficie);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: border-color var(--transicion), background-color var(--transicion);
+}
+
+.check-caja:hover {
+  background-color: var(--color-superficie-alt);
+}
+
+.check-caja input[type="checkbox"] {
+  width: 17px;
+  height: 17px;
+  accent-color: var(--color-primario);
+  cursor: pointer;
+}
+
+.agregar-tienda-fila {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.acciones-formulario {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-top: 8px;
+  border-top: 1px solid var(--color-borde);
+  flex-wrap: wrap;
+}
+
+/* ==========================================================================
+   Sección 2: Menú semanal
+   ========================================================================== */
+.panel-sustitutos {
+  background-color: var(--color-aviso-fondo);
+  border: 1px solid #f0d7b1;
+  border-radius: var(--radio-medio);
+  padding: 16px 20px;
+  margin-bottom: 20px;
+}
+
+.panel-sustitutos__titulo {
+  font-size: 0.96rem;
+  color: var(--color-aviso);
+  margin-bottom: 10px;
+}
+
+.lista-sustitutos {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.item-sustituto {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(161, 92, 7, 0.16);
+  flex-wrap: wrap;
+}
+
+.item-sustituto:first-child {
+  padding-top: 0;
+  border-top: none;
+}
+
+.item-sustituto__texto {
+  font-size: 0.9rem;
+  color: var(--color-texto);
+}
+
+.item-sustituto__ahorro {
+  font-size: 0.84rem;
+  color: var(--color-exito);
+  font-weight: 600;
+}
+
+.grid-menu {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+  gap: 18px;
+}
+
+.tarjeta-dia {
+  background-color: var(--color-superficie);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-grande);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.tarjeta-dia__cabecera {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--color-borde);
+}
+
+.tarjeta-dia__nombre {
+  font-size: 1.05rem;
+}
+
+.tarjeta-dia__total {
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--color-texto-secundario);
+}
+
+.comida-bloque {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--color-superficie-alt);
+}
+
+.comida-bloque:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.comida-bloque__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  color: var(--color-texto-suave);
+}
+
+.comida-bloque__fila {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.comida-bloque__titulo {
+  font-weight: 600;
+  font-size: 0.96rem;
+  color: var(--color-texto);
+  background: none;
+  border: none;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+}
+
+.comida-bloque__titulo:hover {
+  color: var(--color-primario);
+  text-decoration: underline;
+}
+
+.comida-bloque__acciones {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.boton-icono {
+  min-width: 32px;
+  min-height: 32px;
+  padding: 4px 8px;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-chico);
+  background-color: var(--color-superficie);
+  color: var(--color-texto-secundario);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background-color var(--transicion), color var(--transicion), border-color var(--transicion);
+}
+
+.boton-icono:hover {
+  background-color: var(--color-superficie-alt);
+  color: var(--color-texto);
+}
+
+.boton-icono.favorito-activo {
+  color: #b45309;
+  border-color: #eab308;
+  background-color: #fefce8;
+}
+
+/* ==========================================================================
+   Sección 3: Lista de compras por tienda
+   ========================================================================== */
+.resumen-compras-barra {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  background-color: var(--color-superficie);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-medio);
+  padding: 14px 18px;
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+  color: var(--color-texto-secundario);
+}
+
+.resumen-compras-barra strong {
+  color: var(--color-texto);
+}
+
+.grid-tiendas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+  gap: 18px;
+}
+
+.tarjeta-tienda {
+  background-color: var(--color-superficie);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-grande);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tarjeta-tienda__cabecera {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--color-borde);
+}
+
+.tarjeta-tienda__nombre {
+  font-size: 1.05rem;
+}
+
+.tarjeta-tienda__subtotal {
+  font-weight: 700;
+  font-size: 0.94rem;
+  color: var(--color-primario);
+}
+
+.lista-ingredientes {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.item-compra {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-block: 10px;
+  border-bottom: 1px solid var(--color-superficie-alt);
+}
+
+.item-compra:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.item-compra__label {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  cursor: pointer;
+  flex: 1;
+}
+
+.item-compra__label input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  accent-color: var(--color-primario);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.item-compra__nombre {
+  display: block;
+  font-weight: 500;
+  color: var(--color-texto);
+}
+
+.item-compra__cantidad {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--color-texto-suave);
+}
+
+.item-compra__precio {
+  font-weight: 600;
+  font-size: 0.88rem;
+  color: var(--color-texto-secundario);
+  white-space: nowrap;
+}
+
+.item-compra--comprado .item-compra__nombre {
+  text-decoration: line-through;
+  color: var(--color-texto-suave);
+}
+
+.item-compra--comprado .item-compra__precio {
+  color: var(--color-exito);
+}
+
+/* ==========================================================================
+   Sección 4: Despensa y recetas por caducidad
+   ========================================================================== */
+.layout-despensa {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.panel-despensa,
+.panel-recetas-despensa {
+  background-color: var(--color-superficie);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-grande);
+  padding: 20px;
+}
+
+.subtitulo-bloque {
+  font-size: 1.12rem;
+  margin-bottom: 6px;
+}
+
+.texto-ayuda-suave {
+  font-size: 0.86rem;
+  color: var(--color-texto-suave);
+  margin-bottom: 16px;
+}
+
+.formulario-despensa {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-bottom: 18px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--color-borde);
+}
+
+.fila-despensa-inputs {
+  display: grid;
+  grid-template-columns: 1.4fr 0.8fr 1fr;
+  gap: 10px;
+}
+
+.campo-compacto {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.etiqueta-pequena {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-texto-secundario);
+}
+
+.lista-despensa {
+  display: flex;
+  flex-direction: column;
+}
+
+.item-despensa {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-block: 11px;
+  border-bottom: 1px solid var(--color-superficie-alt);
+}
+
+.item-despensa:last-child {
+  border-bottom: none;
+}
+
+.item-despensa__info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.item-despensa__nombre {
+  font-weight: 600;
+  font-size: 0.94rem;
+}
+
+.item-despensa__meta {
+  font-size: 0.8rem;
+  color: var(--color-texto-suave);
+}
+
+.caducidad-urgente {
+  color: var(--color-peligro);
+  font-weight: 600;
+}
+
+.caducidad-pronto {
+  color: var(--color-aviso);
+  font-weight: 600;
+}
+
+.caducidad-normal {
+  color: var(--color-exito);
+}
+
+.lista-recetas-sugeridas {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.tarjeta-receta-sugerida {
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--color-borde);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.tarjeta-receta-sugerida:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.tarjeta-receta-sugerida__top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.tarjeta-receta-sugerida__nombre {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.tarjeta-receta-sugerida__meta {
+  font-size: 0.82rem;
+  color: var(--color-texto-suave);
+}
+
+.tarjeta-receta-sugerida__detalle {
+  font-size: 0.88rem;
+  color: var(--color-texto-secundario);
+}
+
+.aviso-aprovecha {
+  font-size: 0.83rem;
+  color: var(--color-peligro);
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   Sección 5: Favoritos y Asistente IA
+   ========================================================================== */
+.grid-favoritos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  margin-top: 14px;
+}
+
+.tarjeta-favorito {
+  background-color: var(--color-superficie);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-medio);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tarjeta-favorito__meta {
+  font-size: 0.82rem;
+  color: var(--color-texto-suave);
+}
+
+.tarjeta-favorito__acciones {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 8px;
+  border-top: 1px solid var(--color-superficie-alt);
+}
+
+.divisor {
+  border: none;
+  border-top: 1px solid var(--color-borde);
+  margin-block: 32px;
+}
+
+.bloque-asistente {
+  background-color: var(--color-superficie);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-grande);
+  padding: 24px;
+}
+
+.encabezado-asistente {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+
+.resultado-asistente {
+  border-top: 1px solid var(--color-borde);
+  padding-top: 18px;
+}
+
+.asistente-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+  margin-top: 14px;
+}
+
+.asistente-columna h4 {
+  font-size: 0.96rem;
+  margin-bottom: 8px;
+  color: var(--color-primario);
+}
+
+.asistente-lista {
+  margin: 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: var(--color-texto-secundario);
+}
+
+.estado-vacio {
+  color: var(--color-texto-suave);
+  font-size: 0.92rem;
+  padding-block: 12px;
+}
+
+/* ==========================================================================
+   Modal de receta y Notificación
+   ========================================================================== */
+.modal {
+  width: min(560px, calc(100% - 32px));
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-grande);
+  padding: 0;
+  background-color: var(--color-superficie);
+  color: var(--color-texto);
+  box-shadow: 0 20px 48px rgba(20, 32, 25, 0.18);
+}
+
+.modal::backdrop {
+  background-color: rgba(20, 32, 25, 0.45);
+}
+
+.modal__contenido {
+  padding: 22px 24px;
+}
+
+.modal__cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--color-borde);
+  margin-bottom: 16px;
+}
+
+.modal__titulo {
+  font-size: 1.2rem;
+}
+
+.boton-cerrar {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-chico);
+  background: transparent;
+  font-size: 1.35rem;
+  line-height: 1;
+  color: var(--color-texto-secundario);
+  cursor: pointer;
+}
+
+.boton-cerrar:hover {
+  background-color: var(--color-superficie-alt);
+  color: var(--color-texto);
+}
+
+.modal__cuerpo {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  font-size: 0.94rem;
+}
+
+.modal__lista {
+  margin: 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.notificacion {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 50;
+  max-width: 360px;
+  padding: 12px 16px;
+  border-radius: var(--radio-chico);
+  background-color: var(--color-texto);
+  color: #ffffff;
+  font-size: 0.88rem;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(10px);
+  transition: opacity var(--transicion), transform var(--transicion);
+}
+
+.notificacion.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ==========================================================================
+   Pie de página
+   ========================================================================== */
+.pie-pagina {
+  border-top: 1px solid var(--color-borde);
+  background-color: var(--color-superficie);
+  padding-block: 18px;
+  font-size: 0.84rem;
+  color: var(--color-texto-suave);
+}
+
+.pie-pagina__interior {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.boton-enlace-peligro {
+  background: none;
+  border: none;
+  padding: 4px 0;
+  color: var(--color-peligro);
+  font-size: 0.84rem;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+/* ==========================================================================
+   Diseño responsivo para celular y tablet
+   ========================================================================== */
+@media (max-width: 900px) {
+  .navegacion {
+    display: none;
+  }
+
+  .panel-resumen__metricas {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .layout-despensa {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .contenedor {
+    padding-inline: 14px;
+  }
+
+  .barra-superior__interior {
+    min-height: 56px;
+    gap: 12px;
+  }
+
+  .marca {
+    font-size: 0.96rem;
+  }
+
+  .formulario-grid {
+    grid-template-columns: 1fr;
+    padding: 16px;
+  }
+
+  .fila-despensa-inputs {
+    grid-template-columns: 1fr;
+  }
+
+  .agregar-tienda-fila {
+    flex-direction: column;
+  }
+
+  .metrica__valor {
+    font-size: 1.15rem;
+  }
+
+  .grid-menu,
+  .grid-tiendas {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Estilos limpios al imprimir la lista de compras */
+@media print {
+  .barra-superior,
+  .pestanas,
+  .acciones-seccion,
+  .pie-pagina,
+  .panel-sustitutos {
+    display: none !important;
+  }
+
+  body {
+    background: #ffffff;
+  }
+
+  .tarjeta-tienda {
+    break-inside: avoid;
+    border: 1px solid #999999;
+  }
+}
+
+/* Bloques añadidos: objetivo de alimentación y preferencia de dieta */
+.preferencias-extra {
+  margin-top: 24px;
+  padding: 24px;
+  background: var(--color-superficie);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-grande);
+  box-shadow: 0 2px 8px rgb(20 32 25 / 4%);
+}
+
+.preferencias-extra__encabezado {
+  margin-bottom: 18px;
+}
+
+.titulo-seccion--compacto {
+  margin: 0 0 6px;
+  font-size: 1.2rem;
+}
+
+.preferencias-extra .descripcion-seccion {
+  margin: 0;
+}
+
+.objetivos-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.objetivo-opcion {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  width: 100%;
+  padding: 16px;
+  color: var(--color-texto);
+  text-align: left;
+  background: var(--color-superficie);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-medio);
+  cursor: pointer;
+  transition:
+    border-color var(--transicion),
+    background var(--transicion),
+    box-shadow var(--transicion);
+}
+
+.objetivo-opcion:hover {
+  border-color: var(--color-primario);
+}
+
+.objetivo-opcion:focus-visible {
+  outline: 3px solid rgb(27 107 74 / 25%);
+  outline-offset: 2px;
+}
+
+.objetivo-opcion[aria-pressed="true"] {
+  border-color: var(--color-primario);
+  background: var(--color-primario-suave);
+  box-shadow: inset 0 0 0 1px var(--color-primario);
+}
+
+.objetivo-opcion__icono {
+  display: grid;
+  flex: 0 0 34px;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  color: var(--color-primario);
+  background: var(--color-primario-suave);
+  border-radius: 50%;
+  font-weight: 700;
+}
+
+.objetivo-opcion__texto {
+  display: grid;
+  gap: 4px;
+}
+
+.objetivo-opcion__texto strong {
+  font-family: var(--fuente-titulos);
+  font-size: 0.95rem;
+}
+
+.objetivo-opcion__texto small {
+  color: var(--color-texto-suave);
+  line-height: 1.45;
+}
+
+.dieta-filtros {
+  margin: 0 0 20px;
+  padding: 0;
+  border: 0;
+}
+
+.dieta-filtros__lista {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.tabla-nutrimental-contenedor {
+  overflow-x: auto;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-medio);
+}
+
+.tabla-nutrimental {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.tabla-nutrimental caption {
+  padding: 14px 16px;
+  color: var(--color-texto-secundario);
+  text-align: left;
+  background: var(--color-superficie-alt);
+  font-weight: 700;
+}
+
+.tabla-nutrimental th,
+.tabla-nutrimental td {
+  padding: 12px 16px;
+  border-top: 1px solid var(--color-borde);
+}
+
+.tabla-nutrimental thead th {
+  color: var(--color-texto-suave);
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+
+.tabla-nutrimental tbody th {
+  font-weight: 500;
+}
+
+.tabla-nutrimental tbody td {
+  color: var(--color-primario);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+@media (max-width: 720px) {
+  .objetivos-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .preferencias-extra {
+    padding: 18px;
+  }
+}
+/* Realce visual del objetivo activo y animaciones suaves */
+body,
+.panel-resumen,
+.formulario-grid,
+.preferencias-extra,
+.tarjeta-dia,
+.tarjeta-tienda,
+.metrica,
+.barra-progreso-contenedor {
+  transition: background-color 260ms ease, border-color 260ms ease, box-shadow 260ms ease, color 260ms ease;
+}
+.objetivo-opcion { transition: transform 180ms ease, background-color 240ms ease, border-color 240ms ease, box-shadow 240ms ease; }
+.objetivo-opcion:hover { transform: translateY(-2px); }
+.objetivo-opcion[aria-pressed="true"] { animation: objetivo-seleccionado 320ms ease both; }
+@keyframes objetivo-seleccionado {
+  0% { transform: scale(.98); }
+  65% { transform: scale(1.015); }
+  100% { transform: scale(1); }
+}
+body.modo-ahorro-activo {
+  --color-fondo: #eff8f1;
+  --color-superficie: #fbfffb;
+  --color-superficie-alt: #e7f4e9;
+  --color-borde: #c9dfcd;
+  --color-borde-fuerte: #9fc4a6;
+  --color-primario: #247442;
+  --color-primario-hover: #185b31;
+  --color-primario-suave: #dff2e3;
+}
+body.modo-ahorro-activo .panel-resumen,
+body.modo-ahorro-activo .preferencias-extra,
+body.modo-ahorro-activo .formulario-grid {
+  border-color: #b8d8bf;
+  box-shadow: 0 8px 24px rgb(36 116 66 / 9%);
+}
+body.modo-antojos-activo {
+  --color-primario: #a64f68;
+  --color-primario-hover: #833b51;
+  --color-primario-suave: #faeaf0;
+}
+body.modo-saludable-activo {
+  --color-primario: #197568;
+  --color-primario-hover: #105b50;
+  --color-primario-suave: #e2f4ef;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
