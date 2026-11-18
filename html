@@ -1,0 +1,103 @@
+<section class="preferencias-extra tarjeta-preferencias" aria-labelledby="titulo-objetivo">
+  <div class="preferencias-extra__encabezado">
+    <div>
+      <h2 id="titulo-objetivo" class="titulo-seccion titulo-seccion--compacto">
+        Tu objetivo de alimentación
+      </h2>
+      <p class="descripcion-seccion">
+        Elige el enfoque que quieres tener presente al planear tus comidas.
+      </p>
+    </div>
+  </div>
+
+  <div class="objetivos-grid" role="group" aria-label="Objetivo actual">
+    <button type="button" class="objetivo-opcion"
+      data-objetivo="ahorro" aria-pressed="false">
+      <span class="objetivo-opcion__icono" aria-hidden="true">$</span>
+      <span class="objetivo-opcion__texto">
+        <strong>Modo Ahorro</strong>
+        <small>Prioriza ingredientes rendidores y económicos.</small>
+      </span>
+    </button>
+
+    <button type="button" class="objetivo-opcion"
+      data-objetivo="antojos" aria-pressed="false">
+      <span class="objetivo-opcion__icono" aria-hidden="true">♡</span>
+      <span class="objetivo-opcion__texto">
+        <strong>Antojos</strong>
+        <small>Da espacio a tus platillos favoritos.</small>
+      </span>
+    </button>
+
+    <button type="button" class="objetivo-opcion"
+      data-objetivo="saludable" aria-pressed="false">
+      <span class="objetivo-opcion__icono" aria-hidden="true">＋</span>
+      <span class="objetivo-opcion__texto">
+        <strong>Saludable</strong>
+        <small>Más proteínas y comidas equilibradas.</small>
+      </span>
+    </button>
+  </div>
+
+  <p class="ayuda-campo" id="estado-objetivo" aria-live="polite">
+    Selecciona un objetivo para guardarlo en este navegador.
+  </p>
+</section>
+
+<section class="preferencias-extra dieta-panel" aria-labelledby="titulo-dieta">
+  <div class="preferencias-extra__encabezado">
+    <div>
+      <h2 id="titulo-dieta" class="titulo-seccion titulo-seccion--compacto">
+        Preferencia de dieta
+      </h2>
+      <p class="descripcion-seccion">
+        Selecciona los filtros que quieres considerar. La tabla muestra una referencia diaria estimada por persona.
+      </p>
+    </div>
+  </div>
+
+  <fieldset class="dieta-filtros">
+    <legend class="etiqueta-campo">Filtros de alimentación</legend>
+    <div class="dieta-filtros__lista">
+      <label class="check-caja">
+        <input type="checkbox" name="filtro-dieta" value="vegetariana"> Vegetariana
+      </label>
+      <label class="check-caja">
+        <input type="checkbox" name="filtro-dieta" value="vegana"> Vegana
+      </label>
+      <label class="check-caja">
+        <input type="checkbox" name="filtro-dieta" value="baja-carbohidratos"> Baja en carbohidratos
+      </label>
+      <label class="check-caja">
+        <input type="checkbox" name="filtro-dieta" value="sin-gluten"> Sin gluten
+      </label>
+      <label class="check-caja">
+        <input type="checkbox" name="filtro-dieta" value="sin-lactosa"> Sin lactosa
+      </label>
+    </div>
+  </fieldset>
+
+  <div class="tabla-nutrimental-contenedor">
+    <table class="tabla-nutrimental">
+      <caption id="tabla-nutrimental-caption">
+        Referencia diaria aproximada · por persona
+      </caption>
+      <thead>
+        <tr>
+          <th scope="col">Nutrimento</th>
+          <th scope="col">Referencia</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><th scope="row">Calorías</th><td>2,000 kcal</td></tr>
+        <tr><th scope="row">Proteínas</th><td>75 g</td></tr>
+        <tr><th scope="row">Carbohidratos</th><td>250 g</td></tr>
+        <tr><th scope="row">Grasas</th><td>67 g</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="ayuda-campo" id="estado-dieta" aria-live="polite">
+    Las cifras son orientativas y no sustituyen una recomendación nutricional personalizada.
+  </p>
+</section>
