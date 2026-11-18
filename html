@@ -1,4 +1,285 @@
-<section class="preferencias-extra tarjeta-preferencias" aria-labelledby="titulo-objetivo">
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Planeador de Comida y Despensa</title>
+  <meta name="description" content="Planea tu menú semanal en pesos mexicanos, arma tu lista de compras por tienda, controla tu despensa y aprovecha lo que caduca primero." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Plus+Jakarta+Sans:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="estilos.css" />
+</head>
+<body>
+  <!-- Barra superior de navegación (3 zonas: marca, enlaces y acción principal) -->
+  <header class="barra-superior">
+    <div class="contenedor barra-superior__interior">
+      <a href="#seccion-familia" class="marca">Planeador de Comida y Despensa</a>
+
+      <nav class="navegacion" aria-label="Navegación principal">
+        <a href="#seccion-familia" class="navegacion__enlace activo" data-vista="familia">Familia</a>
+        <a href="#seccion-menu" class="navegacion__enlace" data-vista="menu">Menú</a>
+        <a href="#seccion-compras" class="navegacion__enlace" data-vista="compras">Compras</a>
+        <a href="#seccion-despensa" class="navegacion__enlace" data-vista="despensa">Despensa</a>
+        <a href="#seccion-favoritos" class="navegacion__enlace" data-vista="favoritos">Favoritos</a>
+      </nav>
+
+      <button type="button" id="btn-generar-header" class="boton boton--primario">
+        Generar menú
+      </button>
+    </div>
+  </header>
+
+  <main class="contenedor contenido-principal">
+    <!-- Resumen fijo de presupuesto semanal -->
+    <section class="panel-resumen" aria-label="Resumen de presupuesto semanal">
+      <div class="panel-resumen__metricas">
+        <div class="metrica">
+          <span class="metrica__etiqueta">Presupuesto semanal</span>
+          <strong class="metrica__valor numero" id="resumen-presupuesto">$1,500 MXN</strong>
+        </div>
+        <div class="metrica">
+          <span class="metrica__etiqueta">Costo estimado del menú</span>
+          <strong class="metrica__valor numero" id="resumen-costo">$0 MXN</strong>
+        </div>
+        <div class="metrica">
+          <span class="metrica__etiqueta">Diferencia</span>
+          <strong class="metrica__valor numero" id="resumen-diferencia">$1,500 MXN</strong>
+        </div>
+        <div class="metrica">
+          <span class="metrica__etiqueta">Porciones por comida</span>
+          <strong class="metrica__valor numero" id="resumen-personas">4 personas</strong>
+        </div>
+      </div>
+
+      <div class="barra-progreso-contenedor" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="barra-presupuesto-aria">
+        <div class="barra-progreso__relleno" id="barra-presupuesto"></div>
+      </div>
+
+      <div class="alerta-presupuesto" id="alerta-presupuesto" role="status" aria-live="polite">
+        Configura los datos de tu familia y genera tu menú semanal.
+      </div>
+    </section>
+
+    <!-- Navegación por pestañas para móvil y escritorio -->
+    <div class="pestanas" role="tablist" aria-label="Secciones del planeador">
+      <button type="button" role="tab" aria-selected="true" class="pestana activa" data-vista="familia">1. Familia y presupuesto</button>
+      <button type="button" role="tab" aria-selected="false" class="pestana" data-vista="menu">2. Menú semanal</button>
+      <button type="button" role="tab" aria-selected="false" class="pestana" data-vista="compras">3. Lista de compras</button>
+      <button type="button" role="tab" aria-selected="false" class="pestana" data-vista="despensa">4. Despensa y recetas</button>
+      <button type="button" role="tab" aria-selected="false" class="pestana" data-vista="favoritos">5. Favoritos y asistente</button>
+    </div>
+
+    <!-- SECCIÓN 1: FAMILIA Y PRESUPUESTO -->
+    <section id="seccion-familia" class="seccion-vista activa" aria-labelledby="titulo-familia">
+      <div class="encabezado-seccion">
+        <div>
+          <h1 id="titulo-familia" class="titulo-seccion">Datos de tu familia y presupuesto</h1>
+          <p class="descripcion-seccion">Captura cuánto planeas gastar, cuántas personas comen en casa, sus gustos, alergias y tus tiendas habituales. Todo se guarda automáticamente en tu navegador.</p>
+        </div>
+      </div>
+
+      <form id="form-perfil" class="formulario-grid" novalidate>
+        <div class="bloque-campo">
+          <label for="input-presupuesto" class="etiqueta-campo">Presupuesto semanal (pesos mexicanos)</label>
+          <div class="campo-prefijo">
+            <span class="campo-prefijo__simbolo" aria-hidden="true">$</span>
+            <input type="number" id="input-presupuesto" name="presupuesto" min="200" max="50000" step="50" value="1500" required />
+            <span class="campo-prefijo__sufijo">MXN</span>
+          </div>
+          <p class="ayuda-campo">Ejemplo: $1,200 a $2,500 MXN para una familia de 4 personas.</p>
+        </div>
+
+        <div class="bloque-campo">
+          <label for="input-personas" class="etiqueta-campo">Personas en la familia</label>
+          <input type="number" id="input-personas" name="personas" min="1" max="15" step="1" value="4" required />
+          <p class="ayuda-campo">Las porciones y cantidades de la lista de compras se escalan automáticamente.</p>
+        </div>
+
+        <div class="bloque-campo bloque-campo--completo">
+          <label for="input-gustos" class="etiqueta-campo">¿Qué comidas les gustan?</label>
+          <input type="text" id="input-gustos" name="gustos" placeholder="Ej. comida mexicana, pollo, verduras, pasta, económico, rápido" />
+          <div class="opciones-rapidas" id="gustos-rapidos" aria-label="Sugerencias rápidas de gustos">
+            <button type="button" class="boton-opcion" data-gusto="mexicana">Comida mexicana</button>
+            <button type="button" class="boton-opcion" data-gusto="pollo">Pollo</button>
+            <button type="button" class="boton-opcion" data-gusto="verduras">Verduras</button>
+            <button type="button" class="boton-opcion" data-gusto="economico">Económico</button>
+            <button type="button" class="boton-opcion" data-gusto="rapido">Rápido</button>
+            <button type="button" class="boton-opcion" data-gusto="vegetariano">Sin carne</button>
+            <button type="button" class="boton-opcion" data-gusto="pasta">Pastas y sopas</button>
+          </div>
+        </div>
+
+        <div class="bloque-campo bloque-campo--completo">
+          <fieldset class="grupo-opciones">
+            <legend class="etiqueta-campo">¿Qué no comen o a qué son alérgicos?</legend>
+            <div class="rejilla-checks" id="checks-restricciones">
+              <label class="check-caja"><input type="checkbox" value="lacteos" /> Lácteos</label>
+              <label class="check-caja"><input type="checkbox" value="gluten" /> Gluten / trigo</label>
+              <label class="check-caja"><input type="checkbox" value="mariscos" /> Mariscos y pescado</label>
+              <label class="check-caja"><input type="checkbox" value="cerdo" /> Carne de cerdo</label>
+              <label class="check-caja"><input type="checkbox" value="res" /> Carne de res</label>
+              <label class="check-caja"><input type="checkbox" value="huevo" /> Huevo</label>
+              <label class="check-caja"><input type="checkbox" value="picante" /> Picante</label>
+              <label class="check-caja"><input type="checkbox" value="nueces" /> Nueces y cacahuate</label>
+            </div>
+            <label for="input-restricciones-extra" class="etiqueta-secundaria">Otros ingredientes que prefieren evitar (separados por coma)</label>
+            <input type="text" id="input-restricciones-extra" placeholder="Ej. cebolla, champiñones, cilantro" />
+          </fieldset>
+        </div>
+
+        <div class="bloque-campo bloque-campo--completo">
+          <fieldset class="grupo-opciones">
+            <legend class="etiqueta-campo">Tiendas donde compras normalmente</legend>
+            <div class="rejilla-checks" id="checks-tiendas">
+              <label class="check-caja"><input type="checkbox" value="Walmart" checked /> Walmart</label>
+              <label class="check-caja"><input type="checkbox" value="Soriana" /> Soriana</label>
+              <label class="check-caja"><input type="checkbox" value="Mercado" checked /> Mercado</label>
+              <label class="check-caja"><input type="checkbox" value="Tianguis" checked /> Tianguis</label>
+              <label class="check-caja"><input type="checkbox" value="Chedraui" /> Chedraui</label>
+              <label class="check-caja"><input type="checkbox" value="Bodega Aurrera" /> Bodega Aurrera</label>
+            </div>
+            <div class="agregar-tienda-fila">
+              <label for="input-tienda-nueva" class="sr-only">Agregar otra tienda</label>
+              <input type="text" id="input-tienda-nueva" placeholder="Agregar otra tienda (ej. Abarrotes Don Pepe)" />
+              <button type="button" id="btn-agregar-tienda" class="boton boton--secundario">Agregar tienda</button>
+            </div>
+          </fieldset>
+        </div>
+
+        <div class="acciones-formulario bloque-campo--completo">
+          <button type="submit" class="boton boton--primario">Guardar y generar menú semanal</button>
+          <button type="button" id="btn-restaurar-ejemplo" class="boton boton--texto">Cargar ejemplo inicial</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- SECCIÓN 2: MENÚ SEMANAL -->
+    <section id="seccion-menu" class="seccion-vista" aria-labelledby="titulo-menu">
+      <div class="encabezado-seccion">
+        <div>
+          <h2 id="titulo-menu" class="titulo-seccion">Menú semanal</h2>
+          <p class="descripcion-seccion" id="subtitulo-menu">Desayuno, comida y cena de lunes a domingo con porciones escaladas.</p>
+        </div>
+        <div class="acciones-seccion">
+          <button type="button" id="btn-regenerar-menu" class="boton boton--primario">Generar otro menú</button>
+          <button type="button" id="btn-optimizar-presupuesto" class="boton boton--secundario">Ajustar al presupuesto</button>
+        </div>
+      </div>
+
+      <!-- Sustitutos económicos recomendados si aplica -->
+      <div id="contenedor-sustitutos-menu" class="panel-sustitutos oculto" aria-live="polite"></div>
+
+      <!-- Cuadrícula de los 7 días -->
+      <div id="grid-menu-semanal" class="grid-menu"></div>
+    </section>
+
+    <!-- SECCIÓN 3: LISTA DE COMPRAS POR TIENDA -->
+    <section id="seccion-compras" class="seccion-vista" aria-labelledby="titulo-compras">
+      <div class="encabezado-seccion">
+        <div>
+          <h2 id="titulo-compras" class="titulo-seccion">Lista de compras por tienda</h2>
+          <p class="descripcion-seccion">Marca lo que ya compraste o ya tienes en casa: se pasará automáticamente a tu despensa y se descontará de lo que te falta pagar.</p>
+        </div>
+        <div class="acciones-seccion">
+          <button type="button" id="btn-copiar-lista" class="boton boton--secundario">Copiar lista</button>
+          <button type="button" id="btn-imprimir-lista" class="boton boton--secundario">Imprimir</button>
+          <button type="button" id="btn-desmarcar-lista" class="boton boton--texto">Desmarcar todo</button>
+        </div>
+      </div>
+
+      <div class="resumen-compras-barra" id="resumen-compras-barra"></div>
+
+      <!-- Sustitutos más baratos para ingredientes de la lista -->
+      <div id="contenedor-sustitutos-lista" class="panel-sustitutos oculto"></div>
+
+      <!-- Listas agrupadas por tienda -->
+      <div id="grid-lista-compras" class="grid-tiendas"></div>
+    </section>
+
+    <!-- SECCIÓN 4: DESPENSA Y RECETAS POR CADUCIDAD -->
+    <section id="seccion-despensa" class="seccion-vista" aria-labelledby="titulo-despensa">
+      <div class="encabezado-seccion">
+        <div>
+          <h2 id="titulo-despensa" class="titulo-seccion">Mi despensa y recetas recomendadas</h2>
+          <p class="descripcion-seccion">Registra lo que compraste o tienes en la alacena. Priorizamos recetas con los ingredientes que se echan a perder primero.</p>
+        </div>
+      </div>
+
+      <div class="layout-despensa">
+        <!-- Columna izquierda: Inventario de despensa -->
+        <div class="panel-despensa">
+          <h3 class="subtitulo-bloque">Ingredientes disponibles</h3>
+
+          <form id="form-despensa" class="formulario-despensa">
+            <div class="fila-despensa-inputs">
+              <div class="campo-compacto">
+                <label for="despensa-nombre" class="etiqueta-pequena">Ingrediente</label>
+                <input type="text" id="despensa-nombre" placeholder="Ej. Jitomate, pollo, espinaca" required />
+              </div>
+              <div class="campo-compacto campo-compacto--chico">
+                <label for="despensa-cantidad" class="etiqueta-pequena">Cantidad</label>
+                <input type="text" id="despensa-cantidad" placeholder="Ej. 500 g" value="1 pza" required />
+              </div>
+              <div class="campo-compacto">
+                <label for="despensa-caducidad" class="etiqueta-pequena">¿Cuánto dura?</label>
+                <select id="despensa-caducidad">
+                  <option value="2">Urgente (1 a 2 días)</option>
+                  <option value="4" selected>Pronto (3 a 5 días)</option>
+                  <option value="14">Duradero (1 a 2 semanas)</option>
+                  <option value="60">Alacena (más de 1 mes)</option>
+                </select>
+              </div>
+            </div>
+            <button type="submit" class="boton boton--primario">Agregar a mi despensa</button>
+          </form>
+
+          <div id="lista-despensa" class="lista-despensa"></div>
+        </div>
+
+        <!-- Columna derecha: Recetas sugeridas priorizando caducidad -->
+        <div class="panel-recetas-despensa">
+          <h3 class="subtitulo-bloque">Recetas sugeridas con tu despensa</h3>
+          <p class="texto-ayuda-suave">Ordenadas primero por ingredientes que se echan a perder más rápido y luego por mayor coincidencia con tu alacena.</p>
+          <div id="lista-recetas-despensa" class="lista-recetas-sugeridas"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN 5: FAVORITOS Y ASISTENTE IA -->
+    <section id="seccion-favoritos" class="seccion-vista" aria-labelledby="titulo-favoritos">
+      <div class="encabezado-seccion">
+        <div>
+          <h2 id="titulo-favoritos" class="titulo-seccion">Platillos favoritos y asistente de cocina</h2>
+          <p class="descripcion-seccion">Guarda los platillos que más le gustan a tu familia y consulta sugerencias inteligentes basadas en tu presupuesto y despensa.</p>
+        </div>
+      </div>
+
+      <div class="bloque-favoritos">
+        <h3 class="subtitulo-bloque">Tus platillos favoritos</h3>
+        <div id="grid-favoritos" class="grid-favoritos"></div>
+      </div>
+
+      <hr class="divisor" />
+
+      <!-- Módulo del Asistente IA (preparado para conectar a Claude vía asistente.js) -->
+      <section class="bloque-asistente" aria-labelledby="titulo-asistente">
+        <div class="encabezado-asistente">
+          <div>
+            <h3 id="titulo-asistente" class="subtitulo-bloque">Asistente de menú y ahorro</h3>
+            <p class="texto-ayuda-suave">Genera recomendaciones personalizadas con los datos de tu familia, tiendas y despensa. Actualmente usa el módulo local <code>asistente.js</code>, listo para conectarse a Claude.</p>
+          </div>
+          <button type="button" id="btn-consultar-asistente" class="boton boton--primario">
+            Pedir sugerencias al asistente
+          </button>
+        </div>
+
+        <div id="resultado-asistente" class="resultado-asistente">
+          <p class="estado-vacio">Presiona "Pedir sugerencias al asistente" para recibir ideas de menú económico, recetas de aprovechamiento y sustituciones personalizadas.</p>
+        </div>
+      </section>
+    </section>
+    <section class="preferencias-extra tarjeta-preferencias" aria-labelledby="titulo-objetivo">
   <div class="preferencias-extra__encabezado">
     <div>
       <h2 id="titulo-objetivo" class="titulo-seccion titulo-seccion--compacto">
@@ -101,3 +382,31 @@
     Las cifras son orientativas y no sustituyen una recomendación nutricional personalizada.
   </p>
 </section>
+  </main>
+
+  <!-- Modal sencillo para ver detalle de receta o cambiar platillo -->
+  <dialog id="modal-receta" class="modal">
+    <div class="modal__contenido">
+      <div class="modal__cabecera">
+        <h3 id="modal-titulo" class="modal__titulo">Detalle del platillo</h3>
+        <button type="button" id="btn-cerrar-modal" class="boton-cerrar" aria-label="Cerrar ventana">&times;</button>
+      </div>
+      <div id="modal-cuerpo" class="modal__cuerpo"></div>
+    </div>
+  </dialog>
+
+  <!-- Notificación discreta (toast) para confirmar acciones -->
+  <div id="notificacion" class="notificacion" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <footer class="pie-pagina">
+    <div class="contenedor pie-pagina__interior">
+      <span>Planeador de Comida y Despensa · Datos guardados localmente en este navegador</span>
+      <button type="button" id="btn-borrar-todo" class="boton-enlace-peligro">Reiniciar datos guardados</button>
+    </div>
+  </footer>
+
+  <!-- Scripts en JavaScript puro: primero el módulo del asistente, luego la aplicación -->
+  <script src="asistente.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
