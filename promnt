@@ -1,13 +1,115 @@
-Crea una página web llamada "Planeador de Comida y Despensa" en una carpeta nueva, con tres archivos separados: index.html, styles.css y app.js. No uses frameworks ni librerías, solo HTML, CSS y JavaScript puro. Todo en español.
+function generarMenuSemanal(modoEconomico = false) {
+  const perfil = estado.perfil;
+  const objetivo = (() => {
+    try {
+      return JSON.parse(
+        localStorage.getItem("planeadorPreferenciasAlimentacion") || "{}"
+      ).objetivo || "";
+    } catch {
+      return "";
+    }
+  })();
 
-La página es un planeador semanal de comida. El usuario captura: su presupuesto semanal en pesos mexicanos, cuántas personas hay en su familia, qué comidas les gustan, qué no comen o son alérgicos, y las tiendas donde compra (por ejemplo Walmart, Soriana, mercado, tianguis). Con eso la página genera un menú de la semana (desayuno, comida y cena), escala las porciones al número de personas, arma una lista de compras dividida por tienda con costo estimado y avisa si se pasa del presupuesto.
+  const tiempos = ["desayuno", "comida", "cena"];
 
-Después de comprar, el usuario marca lo que trajo o ya tenía en la alacena, y la página sugiere recetas con esos ingredientes, priorizando lo que se echa a perder primero. También debe poder guardar platillos favoritos y sugerir sustitutos más baratos.
+  const candidatasPorTiempo = Object.fromEntries(
+    tiempos.map((tiempo) => {
+      let candidatas = RECETAS_BASE.filter(
+        (receta) =>
+          receta.tiempo === tiempo &&
+          recetaEsCompatible(receta, perfil)
+      );
 
-Reglas de la primera versión: los datos los captura el usuario (sin precios en tiempo real), todo se guarda en localStorage, el diseño es limpio, responsivo y funciona bien en celular. Las recetas y precios de ejemplo van en un arreglo en app.js, fáciles de editar.
+      // Si las restricciones no dejan opciones, conserva el respaldo existente.
+      if (!candidatas.length) {
+        candidatas = RECETAS_BASE.filter(
+          (receta) => receta.tiempo === tiempo
+        );
+      }
 
-Código: HTML semántico, CSS con variables para colores, JavaScript dividido en funciones pequeñas y comentado en español.
+      return [
+        tiempo,
+        candidatas.map((receta) => ({
+          receta,
+          costo: calcularCostoReceta(receta)
+        }))
+      ];
+    })
+  );
 
-Asistente de IA: deja preparado en app.js un módulo separado (por ejemplo asistente.js) con una función que recibe el presupuesto, las personas, gustos, restricciones, tiendas y despensa, y devuelve sugerencias de menú y recetas. Por ahora que use datos de ejemplo, pero con la estructura lista para conectarse a la API de Claude.
+  // Cada desayuno, comida y cena es un espacio del presupuesto semanal.
+  const espacios = DIAS_SEMANA.flatMap((dia) =>
+    tiempos.map((tiempo) => ({ dia, tiempo }))
+  );
 
-Al terminar, explícame paso a paso, para alguien principiante, cómo agregar el asistente de IA: cómo conseguir una API key en la consola de Anthropic, por qué la key nunca debe ir directamente en el JavaScript del navegador, cómo crear un pequeño servidor (Node.js) que guarde la key y haga las llamadas a la API, cómo conectar ese servidor con la página, un ejemplo del prompt que se le enviaría a Claude con los datos de la familia, y cómo probarlo localmente. También dime cómo correr la página en mi computadora y cómo publicarla gratis cuando esté lista.
+  // Calcula cuánto costaría, como mínimo, completar los espacios restantes.
+  const costoMinimoRestante = Array(espacios.length + 1).fill(0);
+
+  for (let i = espacios.length - 1; i >= 0; i--) {
+    const opciones = candidatasPorTiempo[espacios[i].tiempo];
+    const costoMinimo = Math.min(...opciones.map((opcion) => opcion.costo));
+
+    costoMinimoRestante[i] =
+      costoMinimoRestante[i + 1] + costoMinimo;
+  }
+
+  const presupuesto = Math.max(0, Number(perfil.presupuesto) || 0);
+  const cabeEnPresupuesto = costoMinimoRestante[0] <= presupuesto;
+  let restante = presupuesto;
+  const seleccion = [];
+
+  espacios.forEach((espacio, indice) => {
+    const opciones = candidatasPorTiempo[espacio.tiempo];
+
+    // Reserva lo necesario para las comidas que faltan.
+    const maximoParaEstaComida = cabeEnPresupuesto
+      ? Math.max(0, restante - costoMinimoRestante[indice + 1])
+      : Infinity;
+
+    let disponibles = opciones.filter(
+      (opcion) => opcion.costo <= maximoParaEstaComida + 0.001
+    );
+
+    // Si es imposible cumplir el presupuesto, considera todas y elegirá la más barata.
+    if (!disponibles.length) disponibles = opciones;
+
+    const ahorroActivo = modoEconomico || objetivo === "ahorro";
+
+    const opcionesConPuntaje = disponibles.map((opcion) => ({
+      ...opcion,
+      utilidad:
+        puntuarReceta(opcion.receta, perfil) * 10 -
+        (opcion.costo / Math.max(1, presupuesto)) * 5
+    }));
+
+    opcionesConPuntaje.sort((a, b) =>
+      ahorroActivo
+        ? a.costo - b.costo
+        : b.utilidad - a.utilidad || a.costo - b.costo
+    );
+
+    const elegida = opcionesConPuntaje[0];
+
+    seleccion.push({
+      dia: espacio.dia,
+      tiempo: espacio.tiempo,
+      id: elegida.receta.id,
+      costo: elegida.costo
+    });
+
+    restante -= elegida.costo;
+  });
+
+  estado.menuSemanal = DIAS_SEMANA.map((dia) => {
+    const comidasDelDia = seleccion.filter((item) => item.dia === dia);
+
+    return {
+      dia,
+      desayuno: comidasDelDia.find((item) => item.tiempo === "desayuno").id,
+      comida: comidasDelDia.find((item) => item.tiempo === "comida").id,
+      cena: comidasDelDia.find((item) => item.tiempo === "cena").id
+    };
+  });
+
+  guardarEstado();
+}
