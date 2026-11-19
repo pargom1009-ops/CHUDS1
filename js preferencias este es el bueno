@@ -1,0 +1,53 @@
+/** Guarda las preferencias y aplica la apariencia del objetivo activo. */
+(() => {
+  const KEY = "planeadorPreferenciasAlimentacion";
+  const objetivos = [...document.querySelectorAll("[data-objetivo]")];
+  const filtros = [...document.querySelectorAll('input[name="filtro-dieta"]')];
+  const estadoObjetivo = document.getElementById("estado-objetivo");
+  const estadoDieta = document.getElementById("estado-dieta");
+  const leer = () => {
+    try { return JSON.parse(localStorage.getItem(KEY)) || { objetivo: "", dietas: [] }; }
+    catch { return { objetivo: "", dietas: [] }; }
+  };
+  const guardar = (valor) => {
+    try { localStorage.setItem(KEY, JSON.stringify(valor)); } catch { /* almacenamiento opcional */ }
+  };
+  const preferencias = leer();
+
+  function aplicarObjetivo(valor) {
+    document.body.classList.toggle("modo-ahorro-activo", valor === "ahorro");
+    document.body.classList.toggle("modo-antojos-activo", valor === "antojos");
+    document.body.classList.toggle("modo-saludable-activo", valor === "saludable");
+    objetivos.forEach((boton) => boton.setAttribute("aria-pressed", String(boton.dataset.objetivo === valor)));
+  }
+
+  aplicarObjetivo(preferencias.objetivo);
+  const actual = objetivos.find((boton) => boton.dataset.objetivo === preferencias.objetivo);
+  if (actual && estadoObjetivo) estadoObjetivo.textContent = `Objetivo guardado: ${actual.querySelector("strong").textContent}.`;
+
+  objetivos.forEach((boton) => boton.addEventListener("click", () => {
+    preferencias.objetivo = boton.dataset.objetivo;
+    guardar(preferencias);
+    aplicarObjetivo(preferencias.objetivo);
+    if (estadoObjetivo) estadoObjetivo.textContent = `Objetivo guardado: ${boton.querySelector("strong").textContent}.`;
+    // El menú se recalcula con el presupuesto y el nuevo objetivo seleccionados.
+    if (typeof generarMenuSemanal === "function" && typeof renderTodo === "function") {
+      generarMenuSemanal(false);
+      renderTodo();
+    }
+  }));
+
+  filtros.forEach((filtro) => {
+    filtro.checked = (preferencias.dietas || []).includes(filtro.value);
+    filtro.addEventListener("change", () => {
+      preferencias.dietas = filtros.filter((item) => item.checked).map((item) => item.value);
+      guardar(preferencias);
+      if (estadoDieta) estadoDieta.textContent = preferencias.dietas.length
+        ? `Filtros guardados: ${filtros.filter((item) => item.checked).map((item) => item.parentElement.textContent.trim()).join(", ")}. Las cifras son orientativas y no sustituyen una recomendación nutricional personalizada.`
+        : "Las cifras son orientativas y no sustituyen una recomendación nutricional personalizada.";
+    });
+  });
+  if (preferencias.dietas?.length && estadoDieta) {
+    estadoDieta.textContent = `Filtros guardados: ${filtros.filter((item) => item.checked).map((item) => item.parentElement.textContent.trim()).join(", ")}. Las cifras son orientativas y no sustituyen una recomendación nutricional personalizada.`;
+  }
+})();
