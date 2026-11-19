@@ -3,14 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Planeador de Comida y Despensa</title>
-  <meta name="description" content="Planea tu menú semanal en pesos mexicanos, arma tu lista de compras por tienda, controla tu despensa y aprovecha lo que caduca primero." />
+  <title>Mesa · Planeador de Comida y Despensa</title>
+  <meta name="description" content="Planea tu menú semanal en pesos mexicanos, arma tu lista de compras por tienda, controla tu despensa y personaliza temas vibrantes de alta visibilidad." />
+  <meta property="og:title" content="Mesa · Planeador de Comida y Despensa" />
+  <meta property="og:description" content="Planea tu menú semanal en pesos mexicanos, arma tu lista de compras por tienda, controla tu despensa y personaliza temas vibrantes de alta visibilidad." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Plus+Jakarta+Sans:wght@600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="/styles.css" />
 </head>
-<body>
+<body class="paleta-esmeralda">
   <header class="barra-superior">
     <div class="contenedor barra-superior__interior">
       <a href="#seccion-familia" class="marca">Mesa<span class="marca__punto">.</span></a>
@@ -322,12 +326,13 @@
         <span><strong>Efectos de sonido</strong><small>Tonos suaves al cambiar de sección y marcar ingredientes.</small></span>
         <input type="checkbox" id="toggle-efectos-sonido" role="switch" />
       </label>
-      <label class="selector-idioma-label" for="selector-paleta">Color de fondo</label>
-      <select id="selector-paleta" class="selector-idioma" aria-label="Paleta de color de fondo">
-        <option value="salvia">Salvia</option>
-        <option value="arena">Arena</option>
-        <option value="lavanda">Lavanda</option>
-        <option value="cielo">Cielo</option>
+      <label class="selector-idioma-label" for="selector-paleta">Cambiar tema</label>
+      <select id="selector-paleta" class="selector-idioma" aria-label="Cambiar tema de la aplicación">
+        <option value="esmeralda">Esmeralda vibrante</option>
+        <option value="terracota">Terracota cálida</option>
+        <option value="cobalto">Azul cobalto</option>
+        <option value="amatista">Amatista intensa</option>
+        <option value="coral">Coral vibrante</option>
       </select>
       <label class="selector-idioma-label" for="selector-idioma">Idioma</label>
       <select id="selector-idioma" class="selector-idioma" aria-label="Idioma de la aplicación">
@@ -357,9 +362,9 @@
     </div>
   </footer>
 
-  <script src="asistente.js"></script>
-  <script src="app.js"></script>
-  <script src="preferencias.js"></script>
-  <script src="idiomas.js"></script>
+  <script src="/asistente.js"></script>
+  <script src="/app.js"></script>
+  <script src="/preferencias.js"></script>
+  <script src="/idiomas.js"></script>
 </body>
 </html>
