@@ -486,6 +486,64 @@ const RECETAS_BASE = [
   }
 ];
 
+/* Recetario ampliado para dar más variedad al menú semanal. */
+const RECETAS_ADICIONALES = [
+  { id: 'hotcakes-avena', nombre: 'Hotcakes de avena y plátano', tiempo: 'desayuno', porcionesBase: 4, minutos: 18, etiquetas: ['economico', 'rapido', 'vegetariano'], alergenos: ['gluten'], pasos: ['Mezcla avena molida, huevo y plátano machacado.', 'Cocina porciones pequeñas en sartén caliente.'], ingredientes: [{ nombre: 'Avena en hojuelas', cantidad: 0.25, unidad: 'kg', precioMXN: 14, categoriaTienda: 'abarrotes', diasCaducidad: 60 }, { nombre: 'Huevo', cantidad: 4, unidad: 'pzas', precioMXN: 17, categoriaTienda: 'abarrotes', diasCaducidad: 14 }, { nombre: 'Plátano tabasco', cantidad: 0.4, unidad: 'kg', precioMXN: 11, categoriaTienda: 'frescos', diasCaducidad: 3 }] },
+  { id: 'yogur-fruta-granola', nombre: 'Yogur con fruta y granola', tiempo: 'desayuno', porcionesBase: 4, minutos: 8, etiquetas: ['rapido', 'vegetariano'], alergenos: ['lacteos'], pasos: ['Sirve el yogur en tazones.', 'Agrega fruta picada y granola.'], ingredientes: [{ nombre: 'Yogur natural', cantidad: 0.6, unidad: 'kg', precioMXN: 34, categoriaTienda: 'lacteos', diasCaducidad: 7 }, { nombre: 'Manzana', cantidad: 0.4, unidad: 'kg', precioMXN: 18, categoriaTienda: 'frescos', diasCaducidad: 7 }, { nombre: 'Granola', cantidad: 0.2, unidad: 'kg', precioMXN: 24, categoriaTienda: 'abarrotes', diasCaducidad: 60 }] },
+  { id: 'burrito-huevo-frijol', nombre: 'Burritos de huevo con frijoles', tiempo: 'desayuno', porcionesBase: 4, minutos: 20, etiquetas: ['mexicana', 'economico'], alergenos: ['huevo', 'gluten'], pasos: ['Prepara huevo revuelto y calienta los frijoles.', 'Rellena tortillas de harina y dóralas en comal.'], ingredientes: [{ nombre: 'Huevo', cantidad: 6, unidad: 'pzas', precioMXN: 26, categoriaTienda: 'abarrotes', diasCaducidad: 14 }, { nombre: 'Frijol cocido o refrito', cantidad: 0.35, unidad: 'kg', precioMXN: 16, categoriaTienda: 'abarrotes', diasCaducidad: 5 }, { nombre: 'Tortillas de harina', cantidad: 1, unidad: 'paq', precioMXN: 26, categoriaTienda: 'abarrotes', diasCaducidad: 14 }] },
+  { id: 'tostada-aguacate-queso', nombre: 'Tostadas de aguacate y queso', tiempo: 'desayuno', porcionesBase: 4, minutos: 12, etiquetas: ['rapido', 'vegetariano'], alergenos: ['gluten', 'lacteos'], pasos: ['Tuesta el pan.', 'Agrega aguacate machacado y queso fresco.'], ingredientes: [{ nombre: 'Pan integral', cantidad: 1, unidad: 'paq', precioMXN: 38, categoriaTienda: 'abarrotes', diasCaducidad: 7 }, { nombre: 'Aguacate', cantidad: 0.35, unidad: 'kg', precioMXN: 24, categoriaTienda: 'frescos', diasCaducidad: 4 }, { nombre: 'Queso fresco', cantidad: 0.15, unidad: 'kg', precioMXN: 22, categoriaTienda: 'lacteos', diasCaducidad: 6 }] },
+  { id: 'quesadillas-champinones', nombre: 'Quesadillas de champiñones', tiempo: 'desayuno', porcionesBase: 4, minutos: 15, etiquetas: ['mexicana', 'rapido', 'vegetariano'], alergenos: ['lacteos'], pasos: ['Saltea los champiñones con cebolla.', 'Rellena tortillas con queso y champiñones; dora.'], ingredientes: [{ nombre: 'Champiñones', cantidad: 0.3, unidad: 'kg', precioMXN: 27, categoriaTienda: 'frescos', diasCaducidad: 4 }, { nombre: 'Tortillas de maíz', cantidad: 0.5, unidad: 'kg', precioMXN: 12, categoriaTienda: 'frescos', diasCaducidad: 3 }, { nombre: 'Queso Oaxaca', cantidad: 0.2, unidad: 'kg', precioMXN: 32, categoriaTienda: 'lacteos', diasCaducidad: 6 }] },
+  { id: 'avena-manzana-nuez', nombre: 'Avena con manzana y canela', tiempo: 'desayuno', porcionesBase: 4, minutos: 12, etiquetas: ['economico', 'vegetariano'], alergenos: ['nueces'], pasos: ['Cocina la avena con agua o leche y canela.', 'Añade manzana en cubos al servir.'], ingredientes: [{ nombre: 'Avena en hojuelas', cantidad: 0.25, unidad: 'kg', precioMXN: 14, categoriaTienda: 'abarrotes', diasCaducidad: 60 }, { nombre: 'Manzana', cantidad: 0.4, unidad: 'kg', precioMXN: 18, categoriaTienda: 'frescos', diasCaducidad: 7 }, { nombre: 'Leche', cantidad: 0.5, unidad: 'L', precioMXN: 14, categoriaTienda: 'lacteos', diasCaducidad: 5 }] },
+  { id: 'omelette-verduras', nombre: 'Omelette de verduras', tiempo: 'desayuno', porcionesBase: 4, minutos: 18, etiquetas: ['saludable', 'rapido'], alergenos: ['huevo'], pasos: ['Bate los huevos y vierte en sartén.', 'Añade espinaca y jitomate; dobla y cocina.'], ingredientes: [{ nombre: 'Huevo', cantidad: 8, unidad: 'pzas', precioMXN: 34, categoriaTienda: 'abarrotes', diasCaducidad: 14 }, { nombre: 'Espinaca', cantidad: 0.2, unidad: 'kg', precioMXN: 18, categoriaTienda: 'frescos', diasCaducidad: 3 }, { nombre: 'Jitomate', cantidad: 0.3, unidad: 'kg', precioMXN: 11, categoriaTienda: 'frescos', diasCaducidad: 4 }] },
+  { id: 'molletes-pico-gallo', nombre: 'Molletes con pico de gallo', tiempo: 'desayuno', porcionesBase: 4, minutos: 16, etiquetas: ['mexicana', 'economico'], alergenos: ['gluten', 'lacteos'], pasos: ['Parte y tuesta los bolillos.', 'Cubre con frijoles y queso; acompaña con pico de gallo.'], ingredientes: [{ nombre: 'Bolillo', cantidad: 4, unidad: 'pzas', precioMXN: 16, categoriaTienda: 'frescos', diasCaducidad: 2 }, { nombre: 'Frijol cocido o refrito', cantidad: 0.35, unidad: 'kg', precioMXN: 16, categoriaTienda: 'abarrotes', diasCaducidad: 5 }, { nombre: 'Queso manchego', cantidad: 0.18, unidad: 'kg', precioMXN: 30, categoriaTienda: 'lacteos', diasCaducidad: 6 }] },
+  { id: 'pollo-arroz-verduras', nombre: 'Pollo con arroz y verduras', tiempo: 'comida', porcionesBase: 4, minutos: 35, etiquetas: ['economico', 'saludable', 'pollo'], alergenos: [], pasos: ['Dora el pollo con ajo y cebolla.', 'Añade arroz, verduras y agua; cocina tapado hasta suavizar.'], ingredientes: [{ nombre: 'Muslo de pollo', cantidad: 0.7, unidad: 'kg', precioMXN: 64, categoriaTienda: 'proteina', diasCaducidad: 2 }, { nombre: 'Arroz', cantidad: 0.3, unidad: 'kg', precioMXN: 10, categoriaTienda: 'abarrotes', diasCaducidad: 180 }, { nombre: 'Verduras mixtas', cantidad: 0.4, unidad: 'kg', precioMXN: 24, categoriaTienda: 'frescos', diasCaducidad: 4 }] },
+  { id: 'enchiladas-frijol', nombre: 'Enchiladas de frijol', tiempo: 'comida', porcionesBase: 4, minutos: 30, etiquetas: ['mexicana', 'economico', 'vegetariano'], alergenos: ['picante'], pasos: ['Rellena tortillas con frijoles.', 'Baña con salsa roja y sirve con queso fresco.'], ingredientes: [{ nombre: 'Tortillas de maíz', cantidad: 0.75, unidad: 'kg', precioMXN: 18, categoriaTienda: 'frescos', diasCaducidad: 3 }, { nombre: 'Frijol cocido o refrito', cantidad: 0.5, unidad: 'kg', precioMXN: 23, categoriaTienda: 'abarrotes', diasCaducidad: 5 }, { nombre: 'Jitomate', cantidad: 0.5, unidad: 'kg', precioMXN: 18, categoriaTienda: 'frescos', diasCaducidad: 4 }] },
+  { id: 'pasta-atun-jitomate', nombre: 'Pasta con atún y jitomate', tiempo: 'comida', porcionesBase: 4, minutos: 25, etiquetas: ['rapido', 'economico'], alergenos: ['gluten', 'pescado'], pasos: ['Cuece la pasta al dente.', 'Mezcla con jitomate salteado y atún.'], ingredientes: [{ nombre: 'Pasta', cantidad: 0.4, unidad: 'kg', precioMXN: 18, categoriaTienda: 'abarrotes', diasCaducidad: 180 }, { nombre: 'Atún en agua', cantidad: 2, unidad: 'latas', precioMXN: 38, categoriaTienda: 'abarrotes', diasCaducidad: 365 }, { nombre: 'Jitomate', cantidad: 0.4, unidad: 'kg', precioMXN: 14, categoriaTienda: 'frescos', diasCaducidad: 4 }] },
+  { id: 'picadillo-lenteja', nombre: 'Picadillo de lentejas', tiempo: 'comida', porcionesBase: 4, minutos: 35, etiquetas: ['economico', 'saludable', 'vegetariano'], alergenos: [], pasos: ['Cuece las lentejas hasta que estén suaves.', 'Agrega papa, zanahoria y jitomate; cocina hasta integrar.'], ingredientes: [{ nombre: 'Lenteja', cantidad: 0.35, unidad: 'kg', precioMXN: 18, categoriaTienda: 'abarrotes', diasCaducidad: 180 }, { nombre: 'Papa', cantidad: 0.5, unidad: 'kg', precioMXN: 13, categoriaTienda: 'frescos', diasCaducidad: 15 }, { nombre: 'Zanahoria', cantidad: 0.3, unidad: 'kg', precioMXN: 9, categoriaTienda: 'frescos', diasCaducidad: 12 }] },
+  { id: 'tacos-pescado-col', nombre: 'Tacos de pescado con col', tiempo: 'comida', porcionesBase: 4, minutos: 25, etiquetas: ['rapido', 'saludable'], alergenos: ['pescado'], pasos: ['Cocina el pescado con limón y especias.', 'Sirve en tortillas con col rallada.'], ingredientes: [{ nombre: 'Filete de pescado', cantidad: 0.55, unidad: 'kg', precioMXN: 78, categoriaTienda: 'proteina', diasCaducidad: 2 }, { nombre: 'Tortillas de maíz', cantidad: 0.5, unidad: 'kg', precioMXN: 12, categoriaTienda: 'frescos', diasCaducidad: 3 }, { nombre: 'Col', cantidad: 0.3, unidad: 'kg', precioMXN: 9, categoriaTienda: 'frescos', diasCaducidad: 10 }] },
+  { id: 'fajitas-pollo-pimientos', nombre: 'Fajitas de pollo y pimientos', tiempo: 'comida', porcionesBase: 4, minutos: 30, etiquetas: ['pollo', 'saludable'], alergenos: [], pasos: ['Corta pollo y verduras en tiras.', 'Saltea a fuego alto y acompaña con arroz o tortillas.'], ingredientes: [{ nombre: 'Pechuga de pollo', cantidad: 0.6, unidad: 'kg', precioMXN: 84, categoriaTienda: 'proteina', diasCaducidad: 2 }, { nombre: 'Pimiento morrón', cantidad: 0.3, unidad: 'kg', precioMXN: 27, categoriaTienda: 'frescos', diasCaducidad: 5 }, { nombre: 'Cebolla blanca', cantidad: 0.2, unidad: 'kg', precioMXN: 7, categoriaTienda: 'frescos', diasCaducidad: 10 }] },
+  { id: 'calabacitas-queso-elote', nombre: 'Calabacitas con elote y queso', tiempo: 'comida', porcionesBase: 4, minutos: 25, etiquetas: ['economico', 'vegetariano'], alergenos: ['lacteos'], pasos: ['Saltea calabacitas y granos de elote.', 'Agrega queso fresco y cocina tapado.'], ingredientes: [{ nombre: 'Calabacita', cantidad: 0.6, unidad: 'kg', precioMXN: 18, categoriaTienda: 'frescos', diasCaducidad: 5 }, { nombre: 'Elote', cantidad: 2, unidad: 'pzas', precioMXN: 16, categoriaTienda: 'frescos', diasCaducidad: 4 }, { nombre: 'Queso fresco', cantidad: 0.2, unidad: 'kg', precioMXN: 29, categoriaTienda: 'lacteos', diasCaducidad: 6 }] },
+  { id: 'arroz-pollo-chipotle', nombre: 'Arroz con pollo al chipotle', tiempo: 'comida', porcionesBase: 4, minutos: 32, etiquetas: ['mexicana', 'pollo'], alergenos: ['picante'], pasos: ['Dora el arroz y agrega jitomate licuado.', 'Incorpora pollo cocido y chipotle; deja terminar la cocción.'], ingredientes: [{ nombre: 'Arroz', cantidad: 0.35, unidad: 'kg', precioMXN: 12, categoriaTienda: 'abarrotes', diasCaducidad: 180 }, { nombre: 'Muslo de pollo', cantidad: 0.6, unidad: 'kg', precioMXN: 55, categoriaTienda: 'proteina', diasCaducidad: 2 }, { nombre: 'Jitomate', cantidad: 0.35, unidad: 'kg', precioMXN: 12, categoriaTienda: 'frescos', diasCaducidad: 4 }] },
+  { id: 'sopa-tortilla', nombre: 'Sopa de tortilla sencilla', tiempo: 'cena', porcionesBase: 4, minutos: 28, etiquetas: ['mexicana', 'economico'], alergenos: ['picante'], pasos: ['Dora las tiras de tortilla.', 'Agrega caldo de jitomate y sirve con aguacate y queso.'], ingredientes: [{ nombre: 'Tortillas de maíz', cantidad: 0.5, unidad: 'kg', precioMXN: 12, categoriaTienda: 'frescos', diasCaducidad: 3 }, { nombre: 'Jitomate', cantidad: 0.5, unidad: 'kg', precioMXN: 18, categoriaTienda: 'frescos', diasCaducidad: 4 }, { nombre: 'Queso fresco', cantidad: 0.12, unidad: 'kg', precioMXN: 18, categoriaTienda: 'lacteos', diasCaducidad: 6 }] },
+  { id: 'ensalada-garbanzos', nombre: 'Ensalada de garbanzos y pepino', tiempo: 'cena', porcionesBase: 4, minutos: 15, etiquetas: ['saludable', 'vegetariano', 'rapido'], alergenos: [], pasos: ['Enjuaga y escurre los garbanzos.', 'Mezcla con pepino, jitomate, limón y cilantro.'], ingredientes: [{ nombre: 'Garbanzo cocido', cantidad: 0.5, unidad: 'kg', precioMXN: 25, categoriaTienda: 'abarrotes', diasCaducidad: 5 }, { nombre: 'Pepino', cantidad: 0.3, unidad: 'kg', precioMXN: 10, categoriaTienda: 'frescos', diasCaducidad: 5 }, { nombre: 'Jitomate', cantidad: 0.3, unidad: 'kg', precioMXN: 11, categoriaTienda: 'frescos', diasCaducidad: 4 }] },
+  { id: 'tostadas-tinga-zanahoria', nombre: 'Tostadas de tinga de zanahoria', tiempo: 'cena', porcionesBase: 4, minutos: 25, etiquetas: ['economico', 'mexicana', 'vegetariano'], alergenos: ['picante'], pasos: ['Ralla y cocina la zanahoria con cebolla y salsa de jitomate.', 'Sirve sobre tostadas con lechuga.'], ingredientes: [{ nombre: 'Zanahoria', cantidad: 0.5, unidad: 'kg', precioMXN: 15, categoriaTienda: 'frescos', diasCaducidad: 12 }, { nombre: 'Tostadas de maíz', cantidad: 1, unidad: 'paq', precioMXN: 24, categoriaTienda: 'abarrotes', diasCaducidad: 30 }, { nombre: 'Lechuga', cantidad: 1, unidad: 'pza', precioMXN: 18, categoriaTienda: 'frescos', diasCaducidad: 5 }] },
+  { id: 'quesadillas-frijol-nopal', nombre: 'Quesadillas de frijol y nopal', tiempo: 'cena', porcionesBase: 4, minutos: 20, etiquetas: ['economico', 'vegetariano', 'mexicana'], alergenos: ['lacteos'], pasos: ['Rellena las tortillas con frijoles, nopal cocido y queso.', 'Dora en comal y sirve caliente.'], ingredientes: [{ nombre: 'Tortillas de maíz', cantidad: 0.5, unidad: 'kg', precioMXN: 12, categoriaTienda: 'frescos', diasCaducidad: 3 }, { nombre: 'Frijol cocido o refrito', cantidad: 0.3, unidad: 'kg', precioMXN: 14, categoriaTienda: 'abarrotes', diasCaducidad: 5 }, { nombre: 'Nopales frescos', cantidad: 0.3, unidad: 'kg', precioMXN: 12, categoriaTienda: 'frescos', diasCaducidad: 3 }] },
+  { id: 'sopa-lentejas-zanahoria', nombre: 'Sopa de lentejas con verduras', tiempo: 'cena', porcionesBase: 4, minutos: 35, etiquetas: ['economico', 'saludable', 'vegetariano'], alergenos: [], pasos: ['Enjuaga las lentejas y ponlas a cocer.', 'Añade zanahoria y jitomate; sazona y cocina hasta suavizar.'], ingredientes: [{ nombre: 'Lenteja', cantidad: 0.35, unidad: 'kg', precioMXN: 18, categoriaTienda: 'abarrotes', diasCaducidad: 180 }, { nombre: 'Zanahoria', cantidad: 0.3, unidad: 'kg', precioMXN: 9, categoriaTienda: 'frescos', diasCaducidad: 12 }, { nombre: 'Jitomate', cantidad: 0.3, unidad: 'kg', precioMXN: 11, categoriaTienda: 'frescos', diasCaducidad: 4 }] },
+  { id: 'ensalada-pollo-manzana', nombre: 'Ensalada de pollo y manzana', tiempo: 'cena', porcionesBase: 4, minutos: 22, etiquetas: ['saludable', 'pollo'], alergenos: [], pasos: ['Cocina y deshebra el pollo.', 'Mezcla con manzana, lechuga y aderezo ligero.'], ingredientes: [{ nombre: 'Pechuga de pollo', cantidad: 0.45, unidad: 'kg', precioMXN: 63, categoriaTienda: 'proteina', diasCaducidad: 2 }, { nombre: 'Manzana', cantidad: 0.35, unidad: 'kg', precioMXN: 16, categoriaTienda: 'frescos', diasCaducidad: 7 }, { nombre: 'Lechuga', cantidad: 1, unidad: 'pza', precioMXN: 18, categoriaTienda: 'frescos', diasCaducidad: 5 }] },
+  { id: 'tacos-papa-poblano', nombre: 'Tacos de papa con poblano', tiempo: 'cena', porcionesBase: 4, minutos: 25, etiquetas: ['economico', 'mexicana', 'vegetariano'], alergenos: ['picante'], pasos: ['Cuece y machaca las papas.', 'Rellena tortillas con papa y rajas de poblano; dora.'], ingredientes: [{ nombre: 'Papa', cantidad: 0.6, unidad: 'kg', precioMXN: 16, categoriaTienda: 'frescos', diasCaducidad: 15 }, { nombre: 'Tortillas de maíz', cantidad: 0.5, unidad: 'kg', precioMXN: 12, categoriaTienda: 'frescos', diasCaducidad: 3 }, { nombre: 'Chile poblano', cantidad: 2, unidad: 'pzas', precioMXN: 18, categoriaTienda: 'frescos', diasCaducidad: 6 }] },
+  { id: 'sándwich-ensalada-huevo', nombre: 'Sándwich de huevo y verduras', tiempo: 'cena', porcionesBase: 4, minutos: 15, etiquetas: ['rapido', 'economico'], alergenos: ['huevo', 'gluten'], pasos: ['Cuece los huevos y pícalos.', 'Mezcla con verduras y sirve entre rebanadas de pan.'], ingredientes: [{ nombre: 'Huevo', cantidad: 6, unidad: 'pzas', precioMXN: 26, categoriaTienda: 'abarrotes', diasCaducidad: 14 }, { nombre: 'Pan integral', cantidad: 1, unidad: 'paq', precioMXN: 38, categoriaTienda: 'abarrotes', diasCaducidad: 7 }, { nombre: 'Jitomate', cantidad: 0.25, unidad: 'kg', precioMXN: 9, categoriaTienda: 'frescos', diasCaducidad: 4 }] },
+];
+RECETAS_BASE.push(...RECETAS_ADICIONALES);
+
+/* Recetas adicionales para ampliar el menú con opciones variadas y veganas. */
+const RECETAS_MAS = [
+  { id: 'pudín-chía-mango', nombre: 'Pudín de chía con mango', tiempo: 'desayuno', porcionesBase: 4, minutos: 10, etiquetas: ['saludable', 'vegano', 'rapido'], alergenos: [], pasos: ['Mezcla chía con bebida de soya y deja reposar.', 'Sirve con mango en cubos.'], ingredientes: [{ nombre: 'Semillas de chía', cantidad: 0.12, unidad: 'kg', precioMXN: 30, categoriaTienda: 'abarrotes', diasCaducidad: 180 }, { nombre: 'Bebida de soya', cantidad: 0.5, unidad: 'L', precioMXN: 24, categoriaTienda: 'abarrotes', diasCaducidad: 7 }, { nombre: 'Mango', cantidad: 0.35, unidad: 'kg', precioMXN: 20, categoriaTienda: 'frescos', diasCaducidad: 4 }] },
+  { id: 'tacos-papa-frijol-manana', nombre: 'Tacos mañaneros de papa y frijol', tiempo: 'desayuno', porcionesBase: 4, minutos: 22, etiquetas: ['economico', 'vegano', 'mexicana'], alergenos: [], pasos: ['Cuece y machaca las papas.', 'Rellena tortillas con papa y frijoles; dora en comal.'], ingredientes: [{ nombre: 'Papa blanca', cantidad: 0.5, unidad: 'kg', precioMXN: 13, categoriaTienda: 'frescos', diasCaducidad: 15 }, { nombre: 'Frijol cocido o refrito', cantidad: 0.3, unidad: 'kg', precioMXN: 14, categoriaTienda: 'abarrotes', diasCaducidad: 5 }, { nombre: 'Tortillas de maíz', cantidad: 0.5, unidad: 'kg', precioMXN: 12, categoriaTienda: 'frescos', diasCaducidad: 3 }] },
+  { id: 'tofu-revuelto', nombre: 'Tofu revuelto con verduras', tiempo: 'desayuno', porcionesBase: 4, minutos: 18, etiquetas: ['saludable', 'vegano', 'rapido'], alergenos: ['soya'], pasos: ['Desmorona el tofu y sazona con cúrcuma.', 'Saltea con jitomate y espinaca.'], ingredientes: [{ nombre: 'Tofu', cantidad: 0.35, unidad: 'kg', precioMXN: 38, categoriaTienda: 'frescos', diasCaducidad: 5 }, { nombre: 'Jitomate', cantidad: 0.25, unidad: 'kg', precioMXN: 9, categoriaTienda: 'frescos', diasCaducidad: 4 }, { nombre: 'Espinaca fresca', cantidad: 0.15, unidad: 'kg', precioMXN: 14, categoriaTienda: 'frescos', diasCaducidad: 3 }] },
+  { id: 'licuado-verde-avena', nombre: 'Licuado verde de avena y plátano', tiempo: 'desayuno', porcionesBase: 4, minutos: 8, etiquetas: ['saludable', 'vegano', 'rapido'], alergenos: ['gluten'], pasos: ['Licúa avena, plátano, espinaca y agua fría.', 'Sirve de inmediato.'], ingredientes: [{ nombre: 'Avena en hojuelas', cantidad: 0.18, unidad: 'kg', precioMXN: 10, categoriaTienda: 'abarrotes', diasCaducidad: 60 }, { nombre: 'Plátano tabasco', cantidad: 0.4, unidad: 'kg', precioMXN: 11, categoriaTienda: 'frescos', diasCaducidad: 3 }, { nombre: 'Espinaca fresca', cantidad: 0.1, unidad: 'kg', precioMXN: 9, categoriaTienda: 'frescos', diasCaducidad: 3 }] },
+  { id: 'avena-papaya-limon', nombre: 'Avena con papaya y limón', tiempo: 'desayuno', porcionesBase: 4, minutos: 12, etiquetas: ['economico', 'vegano'], alergenos: [], pasos: ['Cocina avena con agua y canela.', 'Sirve con papaya y un poco de limón.'], ingredientes: [{ nombre: 'Avena en hojuelas', cantidad: 0.22, unidad: 'kg', precioMXN: 12, categoriaTienda: 'abarrotes', diasCaducidad: 60 }, { nombre: 'Papaya', cantidad: 0.45, unidad: 'kg', precioMXN: 17, categoriaTienda: 'frescos', diasCaducidad: 4 }, { nombre: 'Limón', cantidad: 0.15, unidad: 'kg', precioMXN: 6, categoriaTienda: 'frescos', diasCaducidad: 10 }] },
+  { id: 'tostadas-frijol-aguacate', nombre: 'Tostadas de frijol y aguacate', tiempo: 'desayuno', porcionesBase: 4, minutos: 12, etiquetas: ['mexicana', 'vegano', 'economico'], alergenos: [], pasos: ['Unta frijoles sobre tostadas.', 'Agrega aguacate, jitomate y cilantro.'], ingredientes: [{ nombre: 'Tostadas de maíz', cantidad: 1, unidad: 'paq', precioMXN: 24, categoriaTienda: 'abarrotes', diasCaducidad: 30 }, { nombre: 'Frijol cocido o refrito', cantidad: 0.3, unidad: 'kg', precioMXN: 14, categoriaTienda: 'abarrotes', diasCaducidad: 5 }, { nombre: 'Aguacate', cantidad: 0.25, unidad: 'kg', precioMXN: 17, categoriaTienda: 'frescos', diasCaducidad: 4 }] },
+  { id: 'quinoa-manzana-canela', nombre: 'Quinoa dulce con manzana', tiempo: 'desayuno', porcionesBase: 4, minutos: 22, etiquetas: ['saludable', 'vegano'], alergenos: [], pasos: ['Enjuaga y cuece la quinoa con agua y canela.', 'Agrega manzana picada al servir.'], ingredientes: [{ nombre: 'Quinoa', cantidad: 0.2, unidad: 'kg', precioMXN: 32, categoriaTienda: 'abarrotes', diasCaducidad: 180 }, { nombre: 'Manzana', cantidad: 0.35, unidad: 'kg', precioMXN: 16, categoriaTienda: 'frescos', diasCaducidad: 7 }, { nombre: 'Canela', cantidad: 0.01, unidad: 'kg', precioMXN: 5, categoriaTienda: 'abarrotes', diasCaducidad: 365 }] },
+  { id: 'tacos-champinon-elote-des', nombre: 'Tacos de champiñón y elote', tiempo: 'desayuno', porcionesBase: 4, minutos: 16, etiquetas: ['rapido', 'vegano', 'mexicana'], alergenos: [], pasos: ['Saltea champiñones con elote y cebolla.', 'Sirve en tortillas de maíz.'], ingredientes: [{ nombre: 'Champiñones', cantidad: 0.25, unidad: 'kg', precioMXN: 23, categoriaTienda: 'frescos', diasCaducidad: 4 }, { nombre: 'Elote desgranado', cantidad: 0.2, unidad: 'kg', precioMXN: 12, categoriaTienda: 'frescos', diasCaducidad: 4 }, { nombre: 'Tortillas de maíz', cantidad: 0.4, unidad: 'kg', precioMXN: 10, categoriaTienda: 'frescos', diasCaducidad: 3 }] },
+  { id: 'curry-garbanzos-arroz', nombre: 'Curry de garbanzos con arroz', tiempo: 'comida', porcionesBase: 4, minutos: 35, etiquetas: ['vegano', 'saludable'], alergenos: [], pasos: ['Sofríe cebolla con curry y jitomate.', 'Agrega garbanzo y cocina; sirve con arroz.'], ingredientes: [{ nombre: 'Garbanzo cocido', cantidad: 0.45, unidad: 'kg', precioMXN: 23, categoriaTienda: 'abarrotes', diasCaducidad: 5 }, { nombre: 'Arroz blanco', cantidad: 0.3, unidad: 'kg', precioMXN: 10, categoriaTienda: 'abarrotes', diasCaducidad: 180 }, { nombre: 'Jitomate', cantidad: 0.35, unidad: 'kg', precioMXN: 12, categoriaTienda: 'frescos', diasCaducidad: 4 }] },
+  { id: 'pimientos-quinoa-frijol', nombre: 'Pimientos rellenos de quinoa y frijol', tiempo: 'comida', porcionesBase: 4, minutos: 35, etiquetas: ['vegano', 'saludable'], alergenos: [], pasos: ['Mezcla quinoa cocida con frijoles y jitomate.', 'Rellena pimientos y hornea hasta suavizar.'], ingredientes: [{ nombre: 'Quinoa', cantidad: 0.22, unidad: 'kg', precioMXN: 35, categoriaTienda: 'abarrotes', diasCaducidad: 180 }, { nombre: 'Frijol cocido o refrito', cantidad: 0.3, unidad: 'kg', precioMXN: 14, categoriaTienda: 'abarrotes', diasCaducidad: 5 }, { nombre: 'Pimiento morrón', cantidad: 3, unidad: 'pzas', precioMXN: 30, categoriaTienda: 'frescos', diasCaducidad: 5 }] },
+  { id: 'tofu-arroz-brocoli', nombre: 'Bowl de tofu, arroz y brócoli', tiempo: 'comida', porcionesBase: 4, minutos: 30, etiquetas: ['vegano', 'saludable'], alergenos: ['soya'], pasos: ['Dora el tofu en cubos.', 'Sirve sobre arroz con brócoli salteado.'], ingredientes: [{ nombre: 'Tofu', cantidad: 0.4, unidad: 'kg', precioMXN: 44, categoriaTienda: 'frescos', diasCaducidad: 5 }, { nombre: 'Arroz blanco', cantidad: 0.3, unidad: 'kg', precioMXN: 10, categoriaTienda: 'abarrotes', diasCaducidad: 180 }, { nombre: 'Brócoli', cantidad: 0.35, unidad: 'kg', precioMXN: 24, categoriaTienda: 'frescos', diasCaducidad: 5 }] },
+  { id: 'tinga-setas', nombre: 'Tinga de setas en tostadas', tiempo: 'comida', porcionesBase: 4, minutos: 28, etiquetas: ['vegano', 'mexicana'], alergenos: [], pasos: ['Deshebra las setas y cocina con cebolla y jitomate.', 'Sirve sobre tostadas con lechuga.'], ingredientes: [{ nombre: 'Setas', cantidad: 0.4, unidad: 'kg', precioMXN: 33, categoriaTienda: 'frescos', diasCaducidad: 4 }, { nombre: 'Jitomate', cantidad: 0.4, unidad: 'kg', precioMXN: 14, categoriaTienda: 'frescos', diasCaducidad: 4 }, { nombre: 'Tostadas de maíz', cantidad: 1, unidad: 'paq', precioMXN: 24, categoriaTienda: 'abarrotes', diasCaducidad: 30 }] },
+  { id: 'sopa-frijol-nopal', nombre: 'Sopa de frijol con nopal', tiempo: 'comida', porcionesBase: 4, minutos: 30, etiquetas: ['vegano', 'economico', 'mexicana'], alergenos: [], pasos: ['Licúa una parte de los frijoles con jitomate.', 'Agrega nopales y cocina hasta que estén suaves.'], ingredientes: [{ nombre: 'Frijol cocido o refrito', cantidad: 0.45, unidad: 'kg', precioMXN: 20, categoriaTienda: 'abarrotes', diasCaducidad: 5 }, { nombre: 'Nopales frescos', cantidad: 0.3, unidad: 'kg', precioMXN: 12, categoriaTienda: 'frescos', diasCaducidad: 3 }, { nombre: 'Jitomate', cantidad: 0.3, unidad: 'kg', precioMXN: 11, categoriaTienda: 'frescos', diasCaducidad: 4 }] },
+  { id: 'pasta-espinaca-jitomate', nombre: 'Pasta con espinaca y jitomate', tiempo: 'comida', porcionesBase: 4, minutos: 24, etiquetas: ['vegano', 'rapido'], alergenos: ['gluten'], pasos: ['Cuece la pasta.', 'Saltea jitomate y espinaca; mezcla y sirve.'], ingredientes: [{ nombre: 'Pasta espagueti', cantidad: 0.35, unidad: 'kg', precioMXN: 16, categoriaTienda: 'abarrotes', diasCaducidad: 180 }, { nombre: 'Espinaca fresca', cantidad: 0.2, unidad: 'kg', precioMXN: 18, categoriaTienda: 'frescos', diasCaducidad: 3 }, { nombre: 'Jitomate', cantidad: 0.3, unidad: 'kg', precioMXN: 11, categoriaTienda: 'frescos', diasCaducidad: 4 }] },
+  { id: 'tacos-lenteja', nombre: 'Tacos de lentejas y verduras', tiempo: 'comida', porcionesBase: 4, minutos: 27, etiquetas: ['vegano', 'economico', 'mexicana'], alergenos: [], pasos: ['Cuece las lentejas con cebolla y comino.', 'Sirve en tortillas con col rallada.'], ingredientes: [{ nombre: 'Lentejas', cantidad: 0.35, unidad: 'kg', precioMXN: 18, categoriaTienda: 'abarrotes', diasCaducidad: 180 }, { nombre: 'Tortillas de maíz', cantidad: 0.5, unidad: 'kg', precioMXN: 12, categoriaTienda: 'frescos', diasCaducidad: 3 }, { nombre: 'Col', cantidad: 0.25, unidad: 'kg', precioMXN: 8, categoriaTienda: 'frescos', diasCaducidad: 10 }] },
+  { id: 'estofado-garbanzos-verduras', nombre: 'Estofado de garbanzo y verduras', tiempo: 'comida', porcionesBase: 4, minutos: 32, etiquetas: ['vegano', 'saludable'], alergenos: [], pasos: ['Coloca garbanzos, papa, zanahoria y jitomate en una olla.', 'Cubre con agua y cocina hasta suavizar.'], ingredientes: [{ nombre: 'Garbanzo cocido', cantidad: 0.4, unidad: 'kg', precioMXN: 20, categoriaTienda: 'abarrotes', diasCaducidad: 5 }, { nombre: 'Papa blanca', cantidad: 0.35, unidad: 'kg', precioMXN: 9, categoriaTienda: 'frescos', diasCaducidad: 15 }, { nombre: 'Zanahoria', cantidad: 0.25, unidad: 'kg', precioMXN: 8, categoriaTienda: 'frescos', diasCaducidad: 12 }] },
+  { id: 'tacos-coliflor-poblano', nombre: 'Tacos de coliflor al poblano', tiempo: 'cena', porcionesBase: 4, minutos: 24, etiquetas: ['vegano', 'mexicana'], alergenos: [], pasos: ['Dora la coliflor en trozos con rajas de poblano.', 'Sirve en tortillas con salsa de jitomate.'], ingredientes: [{ nombre: 'Coliflor', cantidad: 0.45, unidad: 'kg', precioMXN: 25, categoriaTienda: 'frescos', diasCaducidad: 5 }, { nombre: 'Chile poblano', cantidad: 2, unidad: 'pzas', precioMXN: 18, categoriaTienda: 'frescos', diasCaducidad: 6 }, { nombre: 'Tortillas de maíz', cantidad: 0.4, unidad: 'kg', precioMXN: 10, categoriaTienda: 'frescos', diasCaducidad: 3 }] },
+  { id: 'sopa-papa-puerro', nombre: 'Sopa de papa y poro', tiempo: 'cena', porcionesBase: 4, minutos: 30, etiquetas: ['vegano', 'economico'], alergenos: [], pasos: ['Saltea poro con papa en cubos.', 'Agrega agua y cocina; machaca ligeramente para espesar.'], ingredientes: [{ nombre: 'Papa blanca', cantidad: 0.45, unidad: 'kg', precioMXN: 12, categoriaTienda: 'frescos', diasCaducidad: 15 }, { nombre: 'Poro', cantidad: 0.2, unidad: 'kg', precioMXN: 18, categoriaTienda: 'frescos', diasCaducidad: 6 }, { nombre: 'Cebolla blanca', cantidad: 0.15, unidad: 'kg', precioMXN: 5, categoriaTienda: 'frescos', diasCaducidad: 10 }] },
+  { id: 'tostadas-verdura-asada', nombre: 'Tostadas de verduras asadas', tiempo: 'cena', porcionesBase: 4, minutos: 25, etiquetas: ['vegano', 'saludable'], alergenos: [], pasos: ['Asa calabacita, pimiento y cebolla.', 'Sirve sobre tostadas con aguacate.'], ingredientes: [{ nombre: 'Calabacita', cantidad: 0.35, unidad: 'kg', precioMXN: 11, categoriaTienda: 'frescos', diasCaducidad: 5 }, { nombre: 'Pimiento morrón', cantidad: 2, unidad: 'pzas', precioMXN: 20, categoriaTienda: 'frescos', diasCaducidad: 5 }, { nombre: 'Tostadas de maíz', cantidad: 1, unidad: 'paq', precioMXN: 24, categoriaTienda: 'abarrotes', diasCaducidad: 30 }] },
+  { id: 'bowl-frijol-arroz-maiz', nombre: 'Bowl de frijol, arroz y maíz', tiempo: 'cena', porcionesBase: 4, minutos: 20, etiquetas: ['vegano', 'economico'], alergenos: [], pasos: ['Calienta frijoles, arroz y elote por separado.', 'Sirve en tazones con jitomate y limón.'], ingredientes: [{ nombre: 'Frijol cocido o refrito', cantidad: 0.35, unidad: 'kg', precioMXN: 16, categoriaTienda: 'abarrotes', diasCaducidad: 5 }, { nombre: 'Arroz blanco', cantidad: 0.25, unidad: 'kg', precioMXN: 9, categoriaTienda: 'abarrotes', diasCaducidad: 180 }, { nombre: 'Elote desgranado', cantidad: 0.2, unidad: 'kg', precioMXN: 12, categoriaTienda: 'frescos', diasCaducidad: 4 }] },
+  { id: 'fajitas-setas-pimiento', nombre: 'Fajitas de setas y pimiento', tiempo: 'cena', porcionesBase: 4, minutos: 20, etiquetas: ['vegano', 'rapido'], alergenos: [], pasos: ['Corta setas y pimientos en tiras.', 'Saltea con cebolla y sirve con tortillas.'], ingredientes: [{ nombre: 'Setas', cantidad: 0.3, unidad: 'kg', precioMXN: 25, categoriaTienda: 'frescos', diasCaducidad: 4 }, { nombre: 'Pimiento morrón', cantidad: 2, unidad: 'pzas', precioMXN: 20, categoriaTienda: 'frescos', diasCaducidad: 5 }, { nombre: 'Tortillas de maíz', cantidad: 0.4, unidad: 'kg', precioMXN: 10, categoriaTienda: 'frescos', diasCaducidad: 3 }] },
+  { id: 'calabaza-lentejas', nombre: 'Calabaza con lentejas especiadas', tiempo: 'cena', porcionesBase: 4, minutos: 30, etiquetas: ['vegano', 'saludable'], alergenos: [], pasos: ['Cuece las lentejas con trozos de calabaza.', 'Sazona con comino y sirve caliente.'], ingredientes: [{ nombre: 'Lentejas', cantidad: 0.3, unidad: 'kg', precioMXN: 15, categoriaTienda: 'abarrotes', diasCaducidad: 180 }, { nombre: 'Calabaza', cantidad: 0.4, unidad: 'kg', precioMXN: 16, categoriaTienda: 'frescos', diasCaducidad: 7 }, { nombre: 'Jitomate', cantidad: 0.25, unidad: 'kg', precioMXN: 9, categoriaTienda: 'frescos', diasCaducidad: 4 }] },
+  { id: 'ramen-verduras', nombre: 'Sopa de fideos con verduras', tiempo: 'cena', porcionesBase: 4, minutos: 22, etiquetas: ['vegano', 'rapido'], alergenos: ['gluten'], pasos: ['Cuece los fideos en agua con jengibre y ajo.', 'Agrega zanahoria y champiñones; sirve caliente.'], ingredientes: [{ nombre: 'Fideos', cantidad: 0.25, unidad: 'kg', precioMXN: 16, categoriaTienda: 'abarrotes', diasCaducidad: 180 }, { nombre: 'Zanahoria', cantidad: 0.2, unidad: 'kg', precioMXN: 6, categoriaTienda: 'frescos', diasCaducidad: 12 }, { nombre: 'Champiñones', cantidad: 0.2, unidad: 'kg', precioMXN: 18, categoriaTienda: 'frescos', diasCaducidad: 4 }] },
+  { id: 'enchiladas-papa-salsa', nombre: 'Enchiladas de papa con salsa roja', tiempo: 'cena', porcionesBase: 4, minutos: 28, etiquetas: ['vegano', 'economico', 'mexicana'], alergenos: [], pasos: ['Rellena tortillas con papa machacada.', 'Cubre con salsa roja de jitomate y sirve con cebolla.'], ingredientes: [{ nombre: 'Papa blanca', cantidad: 0.45, unidad: 'kg', precioMXN: 12, categoriaTienda: 'frescos', diasCaducidad: 15 }, { nombre: 'Tortillas de maíz', cantidad: 0.5, unidad: 'kg', precioMXN: 12, categoriaTienda: 'frescos', diasCaducidad: 3 }, { nombre: 'Jitomate', cantidad: 0.4, unidad: 'kg', precioMXN: 14, categoriaTienda: 'frescos', diasCaducidad: 4 }] },
+];
+RECETAS_BASE.push(...RECETAS_MAS);
+
 /**
  * Mapa de sustitutos más baratos para ingredientes costosos.
  * El usuario puede aplicar estos cambios con un clic desde el menú o la lista.
@@ -553,7 +611,6 @@ const ESTADO_INICIAL = {
     { id: "desp-3", nombre: "Frijol cocido o refrito", cantidad: "500 g", diasCaducidad: 5 },
     { id: "desp-4", nombre: "Arroz blanco", cantidad: "1 kg", diasCaducidad: 60 }
   ],
-  favoritos: ["pollo-salsa-verde", "lentejas-verduras"]
 };
 
 let estado = cargarEstado();
@@ -611,6 +668,46 @@ function normalizarTexto(texto) {
     .trim();
 }
 
+function emojiParaIngrediente(nombre) {
+  const texto = normalizarTexto(nombre);
+  if (/pollo|pavo|res|cerdo|carne|bistec|atun|pescado|sardina|camaron/.test(texto)) return /atun|pescado|sardina|camaron/.test(texto) ? "🐟" : "🍗";
+  if (/huevo/.test(texto)) return "🥚";
+  if (/leche|queso|yogur|crema|mantequilla/.test(texto)) return "🧀";
+  if (/jitomate|tomate/.test(texto)) return "🍅";
+  if (/cebolla/.test(texto)) return "🧅";
+  if (/frijol|lenteja|garbanzo/.test(texto)) return "🫘";
+  if (/aguacate/.test(texto)) return "🥑";
+  if (/platano|banana/.test(texto)) return "🍌";
+  if (/manzana/.test(texto)) return "🍎";
+  if (/arroz/.test(texto)) return "🍚";
+  if (/pasta|espagueti|fideo/.test(texto)) return "🍝";
+  if (/tortilla|tostada|totopo|bolillo|pan/.test(texto)) return "🌮";
+  if (/papa/.test(texto)) return "🥔";
+  if (/zanahoria/.test(texto)) return "🥕";
+  if (/lechuga|espinaca|col|nopal|calabacita|verdura/.test(texto)) return "🥬";
+  if (/limon/.test(texto)) return "🍋";
+  if (/champi|seta/.test(texto)) return "🍄";
+  if (/elote|maiz/.test(texto)) return "🌽";
+  if (/pepino/.test(texto)) return "🥒";
+  if (/manojo|cilantro|epazote|perejil|hierba/.test(texto)) return "🌿";
+  if (/mango/.test(texto)) return "🥭";
+  if (/papaya/.test(texto)) return "🍈";
+  if (/fresa/.test(texto)) return "🍓";
+  if (/naranja/.test(texto)) return "🍊";
+  if (/ch[ií]a|quinoa|avena|harina/.test(texto)) return "🌾";
+  if (/tofu|soya|soja/.test(texto)) return "🧊";
+  if (/brocoli/.test(texto)) return "🥦";
+  if (/coliflor/.test(texto)) return "🥦";
+  if (/calabaza/.test(texto)) return "🎃";
+  if (/camote/.test(texto)) return "🍠";
+  if (/ajo/.test(texto)) return "🧄";
+  if (/agua/.test(texto)) return "💧";
+  if (/poro|puerro/.test(texto)) return "🧅";
+  if (/aceite|sal|azucar|canela|comino|curry|pimienta|chipotle|jengibre/.test(texto)) return "🧂";
+  if (/soya|salsa|chile|poblano/.test(texto)) return "🌶️";
+  return "❓";
+}
+
 function obtenerRecetaPorId(id) {
   return RECETAS_BASE.find((r) => r.id === id) || null;
 }
@@ -646,8 +743,30 @@ function calcularCostoReceta(receta, personas = estado.perfil.personas) {
   }, 0);
 }
 
+/** Preferencias de dieta seleccionadas en el panel de alimentación. */
+function obtenerDietasSeleccionadas() {
+  try {
+    const guardadas = JSON.parse(localStorage.getItem("planeadorPreferenciasAlimentacion") || "{}");
+    return Array.isArray(guardadas.dietas) ? guardadas.dietas : [];
+  } catch {
+    return [];
+  }
+}
+
+/** Detecta ingredientes animales tanto en la lista de compra como en los pasos. */
+function recetaEsVegana(receta) {
+  const texto = normalizarTexto([
+    receta.nombre,
+    ...(receta.ingredientes || []).map((ingrediente) => ingrediente.nombre),
+    ...(receta.pasos || [])
+  ].join(" "));
+  const productosAnimales = /\b(huevos?|leche|quesos?|yogur|yogurt|crema|mantequilla|requeson|pollo|pavo|res|cerdo|puerco|carne|tocino|jamon|salchicha|chorizo|pescado|atun|sardina|mariscos?|camaron|pulpo|calamar|filete|miel|gelatina|manteca|suero|caseina|mayonesa)\b|caldo de (pollo|carne|res|pescado)/;
+  const categoriaLactea = (receta.ingredientes || []).some((ingrediente) => ingrediente.categoriaTienda === "lacteos");
+  return !categoriaLactea && !productosAnimales.test(texto);
+}
+
 /**
- * Verifica si una receta cumple con las alergias y restricciones de la familia.
+ * Verifica si una receta cumple con alergias, restricciones y dieta elegida.
  */
 function recetaEsCompatible(receta, perfil = estado.perfil) {
   // 1. Revisamos alergias seleccionadas en checkboxes
@@ -655,6 +774,16 @@ function recetaEsCompatible(receta, perfil = estado.perfil) {
     perfil.restricciones.includes(alergeno)
   );
   if (tieneAlergeno) return false;
+
+  const dietas = obtenerDietasSeleccionadas();
+  const textoIngredientes = normalizarTexto((receta.ingredientes || []).map((i) => i.nombre).join(" "));
+  const textoReceta = normalizarTexto(`${receta.nombre} ${(receta.pasos || []).join(" ")} ${textoIngredientes}`);
+  const contieneCarneOPescado = /\b(pollo|pavo|res|cerdo|puerco|carne|tocino|jamon|salchicha|chorizo|pescado|atun|sardina|mariscos?|camaron|pulpo|calamar|filete)\b/;
+
+  if (dietas.includes("vegana") && !recetaEsVegana(receta)) return false;
+  if (dietas.includes("vegetariana") && contieneCarneOPescado.test(textoReceta)) return false;
+  if (dietas.includes("sin-lactosa") && (receta.alergenos.includes("lacteos") || (receta.ingredientes || []).some((i) => i.categoriaTienda === "lacteos"))) return false;
+  if (dietas.includes("sin-gluten") && receta.alergenos.includes("gluten")) return false;
 
   // 2. Revisamos texto libre de ingredientes evitados
   const palabrasEvitar = (perfil.restriccionesTexto || "")
@@ -679,7 +808,7 @@ function recetaEsCompatible(receta, perfil = estado.perfil) {
 }
 
 /**
- * Puntúa una receta según gustos del usuario y si es favorita.
+ * Puntúa una receta según los gustos del usuario.
  */
 function puntuarReceta(receta, perfil) {
   let puntos = 1;
@@ -691,10 +820,6 @@ function puntuarReceta(receta, perfil) {
     }
   });
 
-  if (estado.favoritos.includes(receta.id)) {
-    puntos += 2;
-  }
-
   // Ligero factor aleatorio para variar cuando el usuario regenera el menú
   return puntos + Math.random() * 2;
 }
@@ -705,38 +830,73 @@ function puntuarReceta(receta, perfil) {
  */
 function generarMenuSemanal(modoEconomico = false) {
   const perfil = estado.perfil;
-  const nuevoMenu = [];
+  const menuBase = [];
+  const objetivo = (() => {
+    try { return JSON.parse(localStorage.getItem("planeadorPreferenciasAlimentacion") || "{}").objetivo || ""; }
+    catch { return ""; }
+  })();
+  const tiempos = ["desayuno", "comida", "cena"];
 
-  const filtrarPorTiempo = (tiempo) => {
-    let candidatas = RECETAS_BASE.filter(
-      (r) => r.tiempo === tiempo && recetaEsCompatible(r, perfil)
-    );
-
-    // Si las restricciones fueron demasiado estrictas, usamos todas las de ese tiempo
-    if (candidatas.length === 0) {
+  const candidatasPorTiempo = Object.fromEntries(tiempos.map((tiempo) => {
+    let candidatas = RECETAS_BASE.filter((r) => r.tiempo === tiempo && recetaEsCompatible(r, perfil));
+    // Solo relaja restricciones antiguas si no hay filtros de dieta seleccionados.
+    if (!candidatas.length && obtenerDietasSeleccionadas().length === 0) {
       candidatas = RECETAS_BASE.filter((r) => r.tiempo === tiempo);
     }
+    return [tiempo, candidatas.map((receta) => ({ receta, costo: calcularCostoReceta(receta) }))];
+  }));
 
-    if (modoEconomico) {
-      return candidatas.sort(
-        (a, b) => calcularCostoReceta(a) - calcularCostoReceta(b)
-      );
-    }
+  const tiempoSinOpciones = Object.entries(candidatasPorTiempo).find(([, opciones]) => opciones.length === 0);
+  if (tiempoSinOpciones) {
+    mostrarNotificacion(`No hay recetas compatibles para ${tiempoSinOpciones[0]}. Cambia algún filtro de dieta para generar el menú.`);
+    return;
+  }
 
-    return candidatas.sort((a, b) => puntuarReceta(b, perfil) - puntuarReceta(a, perfil));
-  };
+  // Representamos cada desayuno, comida y cena como una decisión presupuestaria independiente.
+  const espacios = DIAS_SEMANA.flatMap((dia) => tiempos.map((tiempo) => ({ dia, tiempo })));
+  const costoMinimoRestante = Array(espacios.length + 1).fill(0);
+  for (let i = espacios.length - 1; i >= 0; i--) {
+    const opciones = candidatasPorTiempo[espacios[i].tiempo];
+    costoMinimoRestante[i] = costoMinimoRestante[i + 1] + Math.min(...opciones.map((o) => o.costo));
+  }
 
-  const desayunos = filtrarPorTiempo("desayuno");
-  const comidas = filtrarPorTiempo("comida");
-  const cenas = filtrarPorTiempo("cena");
+  const presupuesto = Math.max(0, Number(perfil.presupuesto) || 0);
+  const combinacionPosible = costoMinimoRestante[0] <= presupuesto;
+  let restante = presupuesto;
+  const seleccion = [];
 
-  DIAS_SEMANA.forEach((dia, indice) => {
-    nuevoMenu.push({
+  espacios.forEach((espacio, indice) => {
+    const opciones = candidatasPorTiempo[espacio.tiempo];
+    const maximoActual = combinacionPosible
+      ? Math.max(0, restante - costoMinimoRestante[indice + 1])
+      : Infinity;
+    let disponibles = opciones.filter((o) => o.costo <= maximoActual + 0.001);
+    if (!disponibles.length) disponibles = opciones;
+
+    // Ahorro ordena por costo. En los otros modos, conserva los gustos cuando
+    // varias recetas caben en el presupuesto, con una preferencia moderada por menor costo.
+    const ahorroActivo = modoEconomico || objetivo === "ahorro";
+    const conPuntaje = disponibles.map((op) => ({
+      ...op,
+      utilidad: puntuarReceta(op.receta, perfil) * 10 - op.costo / Math.max(1, presupuesto) * 5
+    }));
+    conPuntaje.sort((a, b) => ahorroActivo
+      ? a.costo - b.costo
+      : b.utilidad - a.utilidad || a.costo - b.costo);
+
+    const elegido = conPuntaje[0];
+    seleccion.push({ dia: espacio.dia, tiempo: espacio.tiempo, id: elegido.receta.id, costo: elegido.costo });
+    restante -= elegido.costo;
+  });
+
+  const nuevoMenu = DIAS_SEMANA.map((dia) => {
+    const comidasDia = seleccion.filter((item) => item.dia === dia);
+    return {
       dia,
-      desayuno: desayunos[indice % desayunos.length].id,
-      comida: comidas[indice % comidas.length].id,
-      cena: cenas[indice % cenas.length].id
-    });
+      desayuno: comidasDia.find((item) => item.tiempo === "desayuno").id,
+      comida: comidasDia.find((item) => item.tiempo === "comida").id,
+      cena: comidasDia.find((item) => item.tiempo === "cena").id
+    };
   });
 
   estado.menuSemanal = nuevoMenu;
@@ -991,6 +1151,15 @@ function cambiarVista(nombreVista) {
   document.querySelectorAll(".navegacion__enlace").forEach((enlace) => {
     enlace.classList.toggle("activo", enlace.dataset.vista === nombreVista);
   });
+
+  const destino = document.getElementById(`seccion-${nombreVista}`);
+  const slider = document.getElementById("slider-vistas");
+  if (destino && slider) {
+    const paginas = [...slider.querySelectorAll(":scope > .seccion-vista")];
+    const indice = paginas.indexOf(destino);
+    if (indice >= 0) slider.scrollTo({ left: slider.clientWidth * indice, behavior: "smooth" });
+    window.subirPaginaSuave?.();
+  }
 }
 
 /**
@@ -1019,23 +1188,37 @@ function renderResumenPresupuesto() {
   barra.className = "barra-progreso__relleno";
   document.getElementById("barra-presupuesto-aria").setAttribute("aria-valuenow", String(porcentaje));
 
-  const alerta = document.getElementById("alerta-presupuesto");
-  alerta.className = "alerta-presupuesto";
-
-  if (totalGeneral === 0) {
-    alerta.textContent = "Aún no hay menú generado. Guarda los datos de tu familia para empezar.";
-  } else if (diferencia < 0) {
+  if (diferencia < 0) {
     barra.classList.add("barra-progreso__relleno--peligro");
-    alerta.classList.add("alerta-presupuesto--peligro");
-    alerta.textContent = `Aviso de presupuesto: el menú estimado supera tu límite por ${formatearMXN(Math.abs(diferencia))}. Usa "Ajustar al presupuesto" o aplica los sustitutos económicos sugeridos.`;
   } else if (porcentaje >= 85) {
     barra.classList.add("barra-progreso__relleno--aviso");
-    alerta.classList.add("alerta-presupuesto--aviso");
-    alerta.textContent = `Presupuesto ajustado (${porcentaje}% utilizado). Te quedan ${formatearMXN(diferencia)} de margen esta semana.`;
-  } else {
-    alerta.classList.add("alerta-presupuesto--exito");
-    alerta.textContent = `Dentro del presupuesto (${porcentaje}% utilizado). Estás ahorrando ${formatearMXN(diferencia)} respecto a tu límite semanal.`;
   }
+}
+
+function actualizarSelectorPersonas(valor) {
+  const selector = document.getElementById("selector-personas");
+  const input = document.getElementById("input-personas");
+  if (!selector || !input) return;
+  const cantidad = Math.min(10, Math.max(1, Number(valor) || 1));
+  input.value = cantidad;
+
+  if (!selector.dataset.creado) {
+    selector.innerHTML = Array.from({ length: 10 }, (_, indice) => {
+      const numero = indice + 1;
+      return `<button type="button" class="burbuja-personas" role="radio" aria-checked="false" data-personas="${numero}">${numero}</button>`;
+    }).join("");
+    selector.dataset.creado = "true";
+  }
+
+  selector.querySelectorAll("[data-personas]").forEach((boton) => {
+    const activa = Number(boton.dataset.personas) === cantidad;
+    boton.classList.toggle("activa", activa);
+    boton.setAttribute("aria-checked", String(activa));
+  });
+  const figuras = document.getElementById("ilustracion-personas");
+  const texto = document.getElementById("texto-personas-ilustrado");
+  if (figuras) figuras.innerHTML = Array.from({ length: Math.min(cantidad, 5) }, (_, i) => `<span class="persona-figura persona-figura--${i + 1}">🧍</span>`).join("");
+  if (texto) texto.textContent = `${cantidad} ${cantidad === 1 ? "persona" : "personas"}`;
 }
 
 /**
@@ -1043,8 +1226,10 @@ function renderResumenPresupuesto() {
  */
 function renderFormularioPerfil() {
   const { perfil } = estado;
+  perfil.personas = Math.min(10, Math.max(1, Number(perfil.personas) || 1));
   document.getElementById("input-presupuesto").value = perfil.presupuesto;
   document.getElementById("input-personas").value = perfil.personas;
+  actualizarSelectorPersonas(perfil.personas);
   document.getElementById("input-gustos").value = perfil.gustos.join(", ");
   document.getElementById("input-restricciones-extra").value = perfil.restriccionesTexto || "";
 
@@ -1145,8 +1330,6 @@ function renderMenuSemanal() {
 
         const costo = calcularCostoReceta(receta);
         totalDia += costo;
-        const esFav = estado.favoritos.includes(receta.id);
-
         return `
           <div class="comida-bloque">
             <div class="comida-bloque__meta">
@@ -1158,13 +1341,6 @@ function renderMenuSemanal() {
                 ${receta.nombre}
               </button>
               <div class="comida-bloque__acciones">
-                <button
-                  type="button"
-                  class="boton-icono ${esFav ? "favorito-activo" : ""}"
-                  title="${esFav ? "Quitar de favoritos" : "Guardar en favoritos"}"
-                  aria-label="${esFav ? "Quitar de favoritos" : "Guardar en favoritos"}"
-                  data-toggle-favorito="${receta.id}"
-                >${esFav ? "★" : "☆"}</button>
                 <button
                   type="button"
                   class="boton-icono"
@@ -1230,7 +1406,7 @@ function renderListaCompras() {
                 ${item.comprado ? "checked" : ""}
               />
               <span>
-                <span class="item-compra__nombre">${item.nombre}${item.esSustituido ? " (sustituto)" : ""}</span>
+                <span class="item-compra__nombre"><span class="emoji-ingrediente" aria-hidden="true">${emojiParaIngrediente(item.nombre)}</span> ${item.nombre}${item.esSustituido ? " (sustituto)" : ""}</span>
                 <span class="item-compra__cantidad numero">${item.cantidad} ${item.unidad}</span>
               </span>
             </label>
@@ -1287,7 +1463,7 @@ function renderDespensaYRecetas() {
         return `
           <div class="item-despensa">
             <div class="item-despensa__info">
-              <span class="item-despensa__nombre">${item.nombre}</span>
+              <span class="item-despensa__nombre"><span class="emoji-ingrediente" aria-hidden="true">${emojiParaIngrediente(item.nombre)}</span> ${item.nombre}</span>
               <span class="item-despensa__meta">
                 ${item.cantidad} · <span class="${claseCaducidad}">${etiquetaCaducidad}</span>
               </span>
@@ -1338,45 +1514,6 @@ function renderDespensaYRecetas() {
 }
 
 /**
- * Renderiza los platillos guardados como favoritos.
- */
-function renderFavoritos() {
-  const grid = document.getElementById("grid-favoritos");
-
-  if (estado.favoritos.length === 0) {
-    grid.innerHTML = `<p class="estado-vacio">Todavía no tienes favoritos. Toca la estrella ☆ en cualquier platillo del menú para guardarlo aquí.</p>`;
-    return;
-  }
-
-  grid.innerHTML = estado.favoritos
-    .map((id) => {
-      const receta = obtenerRecetaPorId(id);
-      if (!receta) return "";
-      const costo = calcularCostoReceta(receta);
-
-      return `
-        <article class="tarjeta-favorito">
-          <div>
-            <h4>${receta.nombre}</h4>
-            <div class="tarjeta-favorito__meta">
-              ${receta.tiempo} · ${receta.minutos} min · <span class="numero">${formatearMXN(costo)}</span> (${estado.perfil.personas} pers.)
-            </div>
-          </div>
-          <div class="tarjeta-favorito__acciones">
-            <button type="button" class="boton boton--secundario boton--chico" data-ver-receta="${receta.id}">
-              Ver receta
-            </button>
-            <button type="button" class="boton boton--texto boton--chico" data-toggle-favorito="${receta.id}">
-              Quitar
-            </button>
-          </div>
-        </article>
-      `;
-    })
-    .join("");
-}
-
-/**
  * Abre el modal con el detalle completo de una receta (ingredientes escalados y pasos).
  */
 function abrirModalReceta(recetaId) {
@@ -1397,7 +1534,7 @@ function abrirModalReceta(recetaId) {
         ${receta.ingredientes
           .map((ing) => {
             const ef = obtenerIngredienteEfectivo(ing, personas, receta.porcionesBase);
-            return `<li>${ef.nombre}: <strong class="numero">${ef.cantidadEscalada} ${ef.unidad}</strong> (${formatearMXN(ef.precioEscalado)})</li>`;
+            return `<li><span class="emoji-ingrediente" aria-hidden="true">${emojiParaIngrediente(ef.nombre)}</span> ${ef.nombre}: <strong class="numero">${ef.cantidadEscalada} ${ef.unidad}</strong> (${formatearMXN(ef.precioEscalado)})</li>`;
           })
           .join("")}
       </ul>
@@ -1421,7 +1558,6 @@ function renderTodo() {
   renderMenuSemanal();
   renderListaCompras();
   renderDespensaYRecetas();
-  renderFavoritos();
 }
 
 /* ==========================================================================
@@ -1430,7 +1566,7 @@ function renderTodo() {
 
 function leerFormularioPerfil() {
   const presupuesto = Math.max(200, Number(document.getElementById("input-presupuesto").value) || 1500);
-  const personas = Math.max(1, Number(document.getElementById("input-personas").value) || 4);
+  const personas = Math.min(10, Math.max(1, Number(document.getElementById("input-personas").value) || 4));
   const gustos = document
     .getElementById("input-gustos")
     .value.split(",")
@@ -1479,20 +1615,6 @@ function cambiarPlatilloDeDia(indiceDia, claveTiempo) {
   mostrarNotificacion(`Cambiado a: ${siguiente.nombre}`);
 }
 
-function alternarFavorito(recetaId) {
-  const existe = estado.favoritos.includes(recetaId);
-  if (existe) {
-    estado.favoritos = estado.favoritos.filter((id) => id !== recetaId);
-    mostrarNotificacion("Quitado de favoritos.");
-  } else {
-    estado.favoritos.push(recetaId);
-    mostrarNotificacion("Guardado en favoritos.");
-  }
-  guardarEstado();
-  renderMenuSemanal();
-  renderFavoritos();
-}
-
 function aplicarSustituto(nombreOriginal) {
   const sub = SUSTITUTOS_ECONOMICOS.find((s) => s.original === nombreOriginal);
   if (!sub) return;
@@ -1539,6 +1661,7 @@ async function consultarAsistenteIA() {
       presupuesto: estado.perfil.presupuesto,
       personas: estado.perfil.personas,
       gustos: estado.perfil.gustos,
+      dietas: obtenerDietasSeleccionadas(),
       restricciones: [
         ...estado.perfil.restricciones,
         ...(estado.perfil.restriccionesTexto ? [estado.perfil.restriccionesTexto] : [])
@@ -1594,6 +1717,13 @@ function registrarEventos() {
     renderTodo();
     cambiarVista("menu");
     mostrarNotificacion("Menú semanal generado.");
+  });
+
+  // Selector visual de 1 a 10 personas.
+  document.getElementById("selector-personas").addEventListener("click", (e) => {
+    const boton = e.target.closest("[data-personas]");
+    if (!boton) return;
+    actualizarSelectorPersonas(boton.dataset.personas);
   });
 
   // Formulario de perfil familiar
@@ -1699,12 +1829,6 @@ function registrarEventos() {
       return;
     }
 
-    const btnFav = e.target.closest("[data-toggle-favorito]");
-    if (btnFav) {
-      alternarFavorito(btnFav.dataset.toggleFavorito);
-      return;
-    }
-
     const btnCambiar = e.target.closest("[data-cambiar-comida]");
     if (btnCambiar) {
       const [idx, tiempo] = btnCambiar.dataset.cambiarComida.split(":");
@@ -1736,6 +1860,17 @@ function registrarEventos() {
     estado.comprados[clave] = chk.checked;
 
     if (chk.checked) {
+      window.reproducirSonidoUI?.("check");
+      const caja = chk.getBoundingClientRect();
+      const paloma = document.createElement("span");
+      paloma.className = "animacion-paloma";
+      paloma.setAttribute("aria-hidden", "true");
+      paloma.textContent = "✓";
+      paloma.style.left = `${caja.right - 8}px`;
+      paloma.style.top = `${caja.top - 8}px`;
+      document.body.appendChild(paloma);
+      paloma.addEventListener("animationend", () => paloma.remove(), { once: true });
+
       agregarADespensa(chk.dataset.nombre, chk.dataset.cantidad, chk.dataset.caducidad);
       mostrarNotificacion(`"${chk.dataset.nombre}" se agregó a tu despensa.`);
     }
