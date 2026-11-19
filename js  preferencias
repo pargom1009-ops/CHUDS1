@@ -1,4 +1,4 @@
-/** Guarda las preferencias y aplica la apariencia del objetivo activo. */
+/** Guarda las preferencias y aplica la apariencia del objetivo activo y del tema visual. */
 (() => {
   const KEY = "planeadorPreferenciasAlimentacion";
   const objetivos = [...document.querySelectorAll("[data-objetivo]")];
@@ -30,7 +30,6 @@
     guardar(preferencias);
     aplicarObjetivo(preferencias.objetivo);
     if (estadoObjetivo) estadoObjetivo.textContent = `Objetivo guardado: ${boton.querySelector("strong").textContent}.`;
-    // El menú se recalcula con el presupuesto y el nuevo objetivo seleccionados.
     if (typeof generarMenuSemanal === "function" && typeof renderTodo === "function") {
       generarMenuSemanal(false);
       renderTodo();
@@ -55,8 +54,6 @@
     estadoDieta.textContent = `Filtros guardados: ${filtros.filter((item) => item.checked).map((item) => item.parentElement.textContent.trim()).join(", ")}. Las cifras son orientativas y no sustituyen una recomendación nutricional personalizada.`;
   }
 
-  // La versión moderna usa animaciones ligadas al scroll en CSS (sin medir/recalcular el panel en cada cuadro).
-  // En navegadores antiguos, usa dos umbrales separados para evitar que el resumen parpadee.
   const resumen = document.querySelector(".panel-resumen");
   const soportaScrollTimeline = window.CSS?.supports?.("animation-timeline: scroll()");
   if (resumen && !soportaScrollTimeline) {
@@ -70,7 +67,6 @@
     revisarCompactacion();
   }
 
-  // Actualiza la pestaña seleccionada al deslizar entre las cinco vistas.
   const slider = document.getElementById("slider-vistas");
   const vistas = ["familia", "menu", "compras", "despensa", "asistente"];
   let sincronizando = false;
@@ -84,78 +80,244 @@
     }, { once: true });
   }
 
-  // Configuración compacta: guardar y aplicar únicamente el modo oscuro.
+  // Configuración: modo oscuro y selector "Cambiar tema" con paletas medio sólidas y vibrantes.
   const configDialog = document.getElementById("dialog-configuracion");
   const configButton = document.getElementById("btn-configuracion");
   const closeConfigButton = document.getElementById("btn-cerrar-configuracion");
   const darkModeToggle = document.getElementById("toggle-modo-oscuro");
   const paletteSelector = document.getElementById("selector-paleta");
   const DARK_KEY = "planeadorModoOscuro";
+
   function aplicarModoOscuro(activo) {
     document.body.classList.toggle("modo-oscuro", activo);
     if (darkModeToggle) darkModeToggle.checked = activo;
     try { localStorage.setItem(DARK_KEY, String(activo)); } catch { /* preferencia opcional */ }
   }
+
   let modoOscuroGuardado = false;
   try { modoOscuroGuardado = localStorage.getItem(DARK_KEY) === "true"; } catch { /* preferencia opcional */ }
   aplicarModoOscuro(modoOscuroGuardado);
+
   const PALETTE_KEY = "planeadorPaletaFondo";
+  const PALETAS_VALIDAS = ["esmeralda", "terracota", "cobalto", "amatista", "coral"];
+  const MAPA_PALETAS_ANTERIORES = {
+    salvia: "esmeralda",
+    arena: "terracota",
+    cielo: "cobalto",
+    lavanda: "amatista"
+  };
+
+  function normalizarPaleta(valor) {
+    const limpio = String(valor || "").trim().toLowerCase();
+    if (PALETAS_VALIDAS.includes(limpio)) return limpio;
+    if (limpio in MAPA_PALETAS_ANTERIORES) return MAPA_PALETAS_ANTERIORES[limpio];
+    return "esmeralda";
+  }
+
   function aplicarPaleta(valor) {
-    const paletas = ["salvia", "arena", "lavanda", "cielo"];
-    const seleccionada = paletas.includes(valor) ? valor : "salvia";
-    document.body.classList.remove(...paletas.map((nombre) => `paleta-${nombre}`));
+    const seleccionada = normalizarPaleta(valor);
+    document.body.classList.remove(
+      ...PALETAS_VALIDAS.map((nombre) => `paleta-${nombre}`),
+      ...Object.keys(MAPA_PALETAS_ANTERIORES).map((nombre) => `paleta-${nombre}`)
+    );
     document.body.classList.add(`paleta-${seleccionada}`);
+    document.documentElement.dataset.tema = seleccionada;
     if (paletteSelector) paletteSelector.value = seleccionada;
     try { localStorage.setItem(PALETTE_KEY, seleccionada); } catch { /* preferencia opcional */ }
   }
-  let paletaGuardada = "salvia";
-  try { paletaGuardada = localStorage.getItem(PALETTE_KEY) || "salvia"; } catch { /* preferencia opcional */ }
+
+  let paletaGuardada = "esmeralda";
+  try { paletaGuardada = localStorage.getItem(PALETTE_KEY) || "esmeralda"; } catch { /* preferencia opcional */ }
   aplicarPaleta(paletaGuardada);
-  paletteSelector?.addEventListener("change", () => aplicarPaleta(paletteSelector.value));
-  configButton?.addEventListener("click", () => configDialog?.showModal());
-  closeConfigButton?.addEventListener("click", () => configDialog?.close());
-  darkModeToggle?.addEventListener("change", () => aplicarModoOscuro(darkModeToggle.checked));
+
+  function animarPanelConfig() {
+    const panel = configDialog?.querySelector(".config-dialog__panel");
+    if (!panel || !configDialog?.open) return;
+    panel.classList.remove("tema-cambiado");
+    void panel.offsetWidth;
+    panel.classList.add("tema-cambiado");
+  }
+
+  paletteSelector?.addEventListener("change", () => {
+    aplicarPaleta(paletteSelector.value);
+    animarPanelConfig();
+    window.reproducirSonidoUI?.("tema");
+  });
+  configButton?.addEventListener("click", () => {
+    configDialog?.showModal();
+    window.reproducirSonidoUI?.("modalAbrir");
+  });
+  closeConfigButton?.addEventListener("click", () => {
+    configDialog?.close();
+    window.reproducirSonidoUI?.("modalCerrar");
+  });
+  darkModeToggle?.addEventListener("change", () => {
+    aplicarModoOscuro(darkModeToggle.checked);
+    animarPanelConfig();
+    window.reproducirSonidoUI?.("tema");
+  });
   configDialog?.addEventListener("click", (evento) => {
-    if (evento.target === configDialog) configDialog.close();
+    if (evento.target === configDialog) {
+      configDialog.close();
+      window.reproducirSonidoUI?.("modalCerrar");
+    }
   });
 
-  // Tonos breves sintetizados con Web Audio; no descarga archivos de sonido.
+  // Sistema de sonidos minimalistas tipo vidrio (estilo Apple) sintetizados con Web Audio.
+  // Usa armónico cristalino (relación 2.756x de barra de vidrio), filtro paso-bajas suave
+  // y límite anti-saturación para mantener cada toque limpio y discreto.
   const SOUND_KEY = "planeadorEfectosSonido";
   const soundToggle = document.getElementById("toggle-efectos-sonido");
+  const languageSelector = document.getElementById("selector-idioma");
   let sonidoActivo = true;
   try { sonidoActivo = localStorage.getItem(SOUND_KEY) !== "false"; } catch { /* sonido activado por defecto */ }
   if (soundToggle) soundToggle.checked = sonidoActivo;
+
   let contextoAudio = null;
+  let filtroMaestro = null;
+  let ultimoSonidoMs = 0;
+
+  const PRESETS_VIDRIO = {
+    // Toque breve de gota de cristal (filtros, gustos, personas, cambiar platillo)
+    tap: [
+      { freq: 1046.5, delay: 0, dur: 0.068, gain: 0.022, armonico: 0.14 }
+    ],
+    // Cambio de sección en el dock inferior (intervalo aireado F5 -> A5)
+    seccion: [
+      { freq: 698.46, delay: 0, dur: 0.085, gain: 0.021, armonico: 0.13 },
+      { freq: 880.0, delay: 0.042, dur: 0.11, gain: 0.024, armonico: 0.16 }
+    ],
+    // Palomita / agregar / copiar (destello limpio de cristal B5 -> E6)
+    check: [
+      { freq: 987.77, delay: 0, dur: 0.08, gain: 0.024, armonico: 0.15 },
+      { freq: 1318.51, delay: 0.048, dur: 0.145, gain: 0.028, armonico: 0.18 }
+    ],
+    // Desmarcar o quitar (descenso suave G5 -> D5)
+    uncheck: [
+      { freq: 783.99, delay: 0, dur: 0.075, gain: 0.02, armonico: 0.11 },
+      { freq: 587.33, delay: 0.04, dur: 0.1, gain: 0.018, armonico: 0.09 }
+    ],
+    // Abrir modal de receta o configuración (acorde translúcido C5 + G5)
+    modalAbrir: [
+      { freq: 523.25, delay: 0, dur: 0.14, gain: 0.022, armonico: 0.12 },
+      { freq: 783.99, delay: 0.022, dur: 0.17, gain: 0.022, armonico: 0.16 }
+    ],
+    // Cerrar modal (toque suave descendente E5 -> B4)
+    modalCerrar: [
+      { freq: 659.25, delay: 0, dur: 0.075, gain: 0.019, armonico: 0.1 },
+      { freq: 493.88, delay: 0.036, dur: 0.1, gain: 0.017, armonico: 0.08 }
+    ],
+    // Cambio de tema, modo oscuro o idioma (brillo armónico E5 -> B5)
+    tema: [
+      { freq: 659.25, delay: 0, dur: 0.11, gain: 0.022, armonico: 0.15 },
+      { freq: 987.77, delay: 0.05, dur: 0.16, gain: 0.025, armonico: 0.18 }
+    ],
+    // Acción principal: planear semana, generar menú o asistente (arpegio D5 -> A5 -> D6)
+    plan: [
+      { freq: 587.33, delay: 0, dur: 0.12, gain: 0.022, armonico: 0.13 },
+      { freq: 880.0, delay: 0.055, dur: 0.15, gain: 0.025, armonico: 0.16 },
+      { freq: 1174.66, delay: 0.11, dur: 0.22, gain: 0.026, armonico: 0.18 }
+    ]
+  };
+
   window.reproducirSonidoUI = (tipo = "seccion") => {
     if (!sonidoActivo) return;
+    const ahoraMs = performance.now();
+    if (ahoraMs - ultimoSonidoMs < 48) return;
+    ultimoSonidoMs = ahoraMs;
+
     const AudioContextUI = window.AudioContext || window.webkitAudioContext;
     if (!AudioContextUI) return;
     try {
-      contextoAudio ||= new AudioContextUI();
+      if (!contextoAudio) {
+        contextoAudio = new AudioContextUI();
+        filtroMaestro = contextoAudio.createBiquadFilter();
+        filtroMaestro.type = "lowpass";
+        filtroMaestro.frequency.value = 4400;
+        filtroMaestro.Q.value = 0.7;
+        filtroMaestro.connect(contextoAudio.destination);
+      }
       if (contextoAudio.state === "suspended") contextoAudio.resume();
-      const tonos = tipo === "check" ? [[880, 0]] : tipo === "plan" ? [[523, 0], [659, .055], [784, .11]] : [[659, 0], [784, .055]];
-      tonos.forEach(([frecuencia, retraso]) => {
-        const inicio = contextoAudio.currentTime + retraso;
-        const oscilador = contextoAudio.createOscillator();
-        const volumen = contextoAudio.createGain();
-        oscilador.type = "sine";
-        oscilador.frequency.setValueAtTime(frecuencia, inicio);
-        volumen.gain.setValueAtTime(.0001, inicio);
-        volumen.gain.exponentialRampToValueAtTime(.025, inicio + .012);
-        volumen.gain.exponentialRampToValueAtTime(.0001, inicio + .11);
-        oscilador.connect(volumen);
-        volumen.connect(contextoAudio.destination);
-        oscilador.start(inicio);
-        oscilador.stop(inicio + .12);
+
+      const notas = PRESETS_VIDRIO[tipo] || PRESETS_VIDRIO.tap;
+      const microVariacion = 1 + (Math.random() - 0.5) * 0.014;
+
+      notas.forEach(({ freq, delay, dur, gain, armonico }) => {
+        const inicio = contextoAudio.currentTime + delay;
+        const fBase = freq * microVariacion;
+
+        // Fundamental pura tipo cristal
+        const oscBase = contextoAudio.createOscillator();
+        const envBase = contextoAudio.createGain();
+        oscBase.type = "sine";
+        oscBase.frequency.setValueAtTime(fBase, inicio);
+        envBase.gain.setValueAtTime(0.0001, inicio);
+        envBase.gain.exponentialRampToValueAtTime(gain, inicio + 0.006);
+        envBase.gain.exponentialRampToValueAtTime(0.0001, inicio + dur);
+        oscBase.connect(envBase);
+        envBase.connect(filtroMaestro);
+        oscBase.start(inicio);
+        oscBase.stop(inicio + dur + 0.015);
+
+        // Armónico agudo de vidrio (relación acústica 2.756x) con caída más rápida
+        if (armonico > 0) {
+          const oscBrillo = contextoAudio.createOscillator();
+          const envBrillo = contextoAudio.createGain();
+          const durBrillo = Math.max(0.032, dur * 0.52);
+          oscBrillo.type = "sine";
+          oscBrillo.frequency.setValueAtTime(fBase * 2.756, inicio);
+          envBrillo.gain.setValueAtTime(0.0001, inicio);
+          envBrillo.gain.exponentialRampToValueAtTime(gain * armonico, inicio + 0.003);
+          envBrillo.gain.exponentialRampToValueAtTime(0.0001, inicio + durBrillo);
+          oscBrillo.connect(envBrillo);
+          envBrillo.connect(filtroMaestro);
+          oscBrillo.start(inicio);
+          oscBrillo.stop(inicio + durBrillo + 0.01);
+        }
       });
     } catch { /* Audio opcional, continúa la interacción aunque el navegador lo bloquee. */ }
   };
+
   soundToggle?.addEventListener("change", () => {
     sonidoActivo = soundToggle.checked;
     try { localStorage.setItem(SOUND_KEY, String(sonidoActivo)); } catch { /* preferencia opcional */ }
+    if (sonidoActivo) window.reproducirSonidoUI?.("tema");
   });
 
-  // Usa el desplazamiento nativo del navegador para evitar saltos entre cuadros.
+  languageSelector?.addEventListener("change", () => {
+    window.reproducirSonidoUI?.("tema");
+  });
+
+  // Sonidos sutiles en interacciones clave sin saturar la experiencia
+  document.addEventListener("click", (evento) => {
+    const objetivo = evento.target instanceof Element ? evento.target : null;
+    if (!objetivo) return;
+
+    if (objetivo.closest("#btn-regenerar-menu, #btn-optimizar-presupuesto, #btn-consultar-asistente")) {
+      window.reproducirSonidoUI?.("plan");
+    } else if (objetivo.closest("[data-receta-id]")) {
+      window.reproducirSonidoUI?.("modalAbrir");
+    } else if (objetivo.closest("#btn-cerrar-modal")) {
+      window.reproducirSonidoUI?.("modalCerrar");
+    } else if (objetivo.closest("[data-aplicar-sustituto], #btn-agregar-tienda, #btn-copiar-lista")) {
+      window.reproducirSonidoUI?.("check");
+    } else if (objetivo.closest("[data-quitar-despensa], #btn-desmarcar-lista")) {
+      window.reproducirSonidoUI?.("uncheck");
+    } else if (objetivo.closest("[data-cambiar-comida], .boton-opcion, .burbuja-personas, [data-objetivo]")) {
+      window.reproducirSonidoUI?.("tap");
+    }
+  });
+
+  document.addEventListener("change", (evento) => {
+    const objetivo = evento.target instanceof HTMLInputElement ? evento.target : null;
+    if (!objetivo) return;
+    if (objetivo.matches("[data-check-compra]") && !objetivo.checked) {
+      window.reproducirSonidoUI?.("uncheck");
+    } else if (objetivo.matches('input[name="filtro-dieta"]')) {
+      window.reproducirSonidoUI?.("tap");
+    }
+  });
+
   window.subirPaginaSuave = () => {
     if (window.scrollY < 2) return;
     window.scrollTo({ top: 0, behavior: "smooth" });
