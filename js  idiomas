@@ -1,0 +1,141 @@
+/* Traducción de la interfaz y preferencia de idioma persistente. */
+(() => {
+  const STORAGE_KEY = "planeadorIdioma";
+  const idiomas = {
+    en: {
+      "Planear semana": "Plan my week", "Inicio": "Home", "Menú": "Menu", "Compras": "Shopping", "Despensa": "Pantry", "Favoritos": "Favorites", "Asistente": "Assistant",
+      "Presupuesto semanal": "Weekly budget", "Costo estimado del menú": "Estimated menu cost", "Diferencia": "Remaining", "Porciones por comida": "Servings per meal",
+      "Configura los datos de tu familia y genera tu menú semanal.": "Set your household details and create your weekly menu.",
+      "Datos de tu familia y presupuesto": "Your household and budget", "Captura cuánto planeas gastar, cuántas personas comen en casa, sus gustos, alergias y tus tiendas habituales. Todo se guarda automáticamente en tu navegador.": "Set your budget, household size, food preferences, allergies, and usual stores. Your information is saved in this browser.",
+      "Presupuesto semanal (pesos mexicanos)": "Weekly budget (Mexican pesos)", "Personas en la familia": "People in your household", "Las porciones y cantidades de la lista de compras se escalan automáticamente.": "Servings and shopping quantities are scaled automatically.",
+      "¿Qué comidas les gustan?": "What foods do you like?", "Ej. comida mexicana, pollo, verduras, pasta, económico, rápido": "E.g. Mexican food, chicken, vegetables, pasta, budget-friendly, quick", "Comida mexicana": "Mexican food", "Pollo": "Chicken", "Verduras": "Vegetables", "Económico": "Budget-friendly", "Rápido": "Quick", "Sin carne": "Meat-free", "Pastas y sopas": "Pasta and soups",
+      "¿Qué no comen o a qué son alérgicos?": "What foods do you avoid or have allergies to?", "Lácteos": "Dairy", "Gluten / trigo": "Gluten / wheat", "Mariscos y pescado": "Seafood and fish", "Carne de cerdo": "Pork", "Carne de res": "Beef", "Huevo": "Egg", "Picante": "Spicy food", "Nueces y cacahuate": "Nuts and peanuts", "Otros ingredientes que prefieren evitar (separados por coma)": "Other ingredients to avoid (separate with commas)", "Ej. cebolla, champiñones, cilantro": "E.g. onion, mushrooms, cilantro",
+      "Tiendas donde compras normalmente": "Stores you usually shop at", "Agregar tienda": "Add store", "Agregar otra tienda (ej. Abarrotes Don Pepe)": "Add another store (e.g. local market)", "Guardar y generar menú semanal": "Save and create weekly menu", "Cargar ejemplo inicial": "Load sample data",
+      "Preferencias de comida": "Food preferences", "Personaliza el estilo de tus comidas y los ingredientes que quieres evitar.": "Choose your meal style and ingredients to avoid.", "Tu objetivo de alimentación": "Your meal goal", "Elige el enfoque que quieres tener presente al planear tus comidas.": "Choose the focus for your meal plan.", "Modo Ahorro": "Budget mode", "Prioriza ingredientes rendidores y económicos.": "Prioritize affordable ingredients that go further.", "Antojos": "Cravings", "Da espacio a tus platillos favoritos.": "Make room for your favorite dishes.", "Saludable": "Healthy", "Más proteínas y comidas equilibradas.": "More protein and balanced meals.", "Selecciona un objetivo para guardarlo en este navegador.": "Choose a goal to save it in this browser.", "Preferencia de dieta": "Diet preference", "Selecciona los filtros que quieres considerar. La tabla muestra una referencia diaria estimada por persona.": "Choose filters to consider. The table shows estimated daily values per person.", "Filtros de alimentación": "Diet filters", "Vegetariana": "Vegetarian", "Vegana": "Vegan", "Baja en carbohidratos": "Low-carb", "Sin gluten": "Gluten-free", "Sin lactosa": "Lactose-free", "Referencia diaria aproximada · por persona": "Approximate daily guide · per person", "Nutrimento": "Nutrient", "Referencia": "Guide", "Calorías": "Calories", "Proteínas": "Protein", "Carbohidratos": "Carbohydrates", "Grasas": "Fat", "Las cifras son orientativas y no sustituyen una recomendación nutricional personalizada.": "Figures are estimates and are not a substitute for personalized nutrition advice.",
+      "Menú semanal": "Weekly menu", "Desayuno, comida y cena para toda la semana. Elige entre más de 60 recetas y mantente cerca de tu presupuesto.": "Breakfast, lunch, and dinner for the week. Choose from 60+ recipes and stay near your budget.", "Generar otro menú": "Create another menu", "Ajustar al presupuesto": "Fit my budget",
+      "Lista de compras por tienda": "Shopping list by store", "Marca lo que ya compraste o ya tienes en casa: se pasará automáticamente a tu despensa y se descontará de lo que te falta pagar.": "Check what you bought or already have. It will be added to your pantry and removed from your remaining cost.", "Copiar lista": "Copy list", "Imprimir": "Print", "Desmarcar todo": "Uncheck all",
+      "Mi despensa y recetas recomendadas": "My pantry and suggested recipes", "Registra lo que compraste o tienes en la alacena. Priorizamos recetas con los ingredientes que se echan a perder primero.": "Track what you bought or have in your pantry. Recipes prioritize ingredients that spoil first.", "Ingredientes disponibles": "Available ingredients", "Ingrediente": "Ingredient", "Cantidad": "Quantity", "¿Cuánto dura?": "How long will it keep?", "Urgente (1 a 2 días)": "Urgent (1–2 days)", "Pronto (3 a 5 días)": "Soon (3–5 days)", "Duradero (1 a 2 semanas)": "Keeps (1–2 weeks)", "Alacena (más de 1 mes)": "Pantry (over 1 month)", "Agregar a mi despensa": "Add to my pantry", "Recetas sugeridas con tu despensa": "Recipes from your pantry", "Ordenadas primero por ingredientes que se echan a perder más rápido y luego por mayor coincidencia con tu alacena.": "Sorted by soon-to-expire ingredients and pantry matches.",
+      "Platillos favoritos": "Favorite dishes", "Guarda los platillos que más le gustan a tu familia y consulta sugerencias inteligentes basadas en tu presupuesto y despensa.": "Save your family's favorite dishes and get ideas based on your budget and pantry.", "Tus platillos favoritos": "Your favorite dishes", "Asistente virtual": "Virtual assistant", "Recibe ideas de menú, recetas para aprovechar tu despensa y consejos para cuidar el presupuesto.": "Get menu ideas, recipes using your pantry, and budget tips.", "Ideas para tu cocina": "Ideas for your kitchen", "Genera recomendaciones personalizadas con los datos de tu familia, tiendas y despensa. Asistente local de cocina: usa tus gustos, presupuesto, despensa y dieta para sugerir opciones.": "Get ideas based on your household, stores, pantry, budget, and diet.", "Pedir sugerencias al asistente": "Ask for suggestions", "Ideas de menú": "Menu ideas", "Recetas con tu despensa": "Recipes from your pantry", "Consejos de ahorro": "Saving tips",
+      "Configuración": "Settings", "Español": "Spanish", "English": "English", "Modo oscuro": "Dark mode", "Usa una paleta oscura en la aplicación.": "Use a dark color palette in the app.", "Efectos de sonido": "Sound effects", "Tonos suaves al cambiar de sección y marcar ingredientes.": "Soft tones when switching sections and checking ingredients.", "Idioma": "Language", "Hebreo (Israel)": "Hebrew (Israel)", "Cerrar configuración": "Close settings", "Reiniciar datos guardados": "Reset saved data",
+      "Porciones:": "Servings:", "Tiempo:": "Time:", "Costo estimado:": "Estimated cost:", "Ingredientes escalados": "Scaled ingredients", "Preparación rápida": "Quick preparation", "En despensa": "In pantry", "Aplicar cambio": "Apply change", "Ver receta": "View recipe", "Quitar": "Remove", "Desayuno": "Breakfast", "Comida": "Lunch", "Cena": "Dinner", "persona": "person", "personas": "people"
+    },
+    he: {
+      "Planear semana": "תכנון השבוע", "Inicio": "בית", "Menú": "תפריט", "Compras": "קניות", "Despensa": "מזווה", "Favoritos": "מועדפים", "Asistente": "עוזר",
+      "Presupuesto semanal": "תקציב שבועי", "Costo estimado del menú": "עלות תפריט משוערת", "Diferencia": "יתרה", "Porciones por comida": "מנות לארוחה",
+      "Configura los datos de tu familia y genera tu menú semanal.": "הגדירו את פרטי הבית ואת התקציב כדי ליצור תפריט שבועי.",
+      "Datos de tu familia y presupuesto": "הבית והתקציב שלכם", "Captura cuánto planeas gastar, cuántas personas comen en casa, sus gustos, alergias y tus tiendas habituales. Todo se guarda automáticamente en tu navegador.": "הגדירו תקציב, מספר אנשים, העדפות מזון, אלרגיות וחנויות קבועות. המידע נשמר בדפדפן.",
+      "Presupuesto semanal (pesos mexicanos)": "תקציב שבועי (פסו מקסיקני)", "Personas en la familia": "מספר האנשים בבית", "Las porciones y cantidades de la lista de compras se escalan automáticamente.": "המנות והכמויות ברשימת הקניות מותאמות אוטומטית.",
+      "¿Qué comidas les gustan?": "אילו מאכלים אתם אוהבים?", "Ej. comida mexicana, pollo, verduras, pasta, económico, rápido": "לדוגמה: אוכל מקסיקני, עוף, ירקות, פסטה, חסכוני ומהיר", "Comida mexicana": "אוכל מקסיקני", "Pollo": "עוף", "Verduras": "ירקות", "Económico": "חסכוני", "Rápido": "מהיר", "Sin carne": "ללא בשר", "Pastas y sopas": "פסטות ומרקים",
+      "¿Qué no comen o a qué son alérgicos?": "ממה נמנעים או למה יש אלרגיה?", "Lácteos": "מוצרי חלב", "Gluten / trigo": "גלוטן / חיטה", "Mariscos y pescado": "פירות ים ודגים", "Carne de cerdo": "בשר חזיר", "Carne de res": "בקר", "Huevo": "ביצה", "Picante": "חריף", "Nueces y cacahuate": "אגוזים ובוטנים", "Otros ingredientes que prefieren evitar (separados por coma)": "מרכיבים נוספים להימנעות (מופרדים בפסיקים)", "Ej. cebolla, champiñones, cilantro": "לדוגמה: בצל, פטריות, כוסברה",
+      "Tiendas donde compras normalmente": "חנויות שבהן קונים בדרך כלל", "Agregar tienda": "הוספת חנות", "Agregar otra tienda (ej. Abarrotes Don Pepe)": "הוספת חנות אחרת", "Guardar y generar menú semanal": "שמירה ויצירת תפריט שבועי", "Cargar ejemplo inicial": "טעינת נתוני דוגמה",
+      "Preferencias de comida": "העדפות אוכל", "Personaliza el estilo de tus comidas y los ingredientes que quieres evitar.": "בחרו סגנון ארוחות ומרכיבים להימנעות.", "Tu objetivo de alimentación": "מטרת התזונה", "Elige el enfoque que quieres tener presente al planear tus comidas.": "בחרו מיקוד לתכנון הארוחות.", "Modo Ahorro": "חיסכון", "Prioriza ingredientes rendidores y económicos.": "העדיפו מרכיבים משתלמים וחסכוניים.", "Antojos": "חשקים", "Da espacio a tus platillos favoritos.": "שלבו את המאכלים האהובים עליכם.", "Saludable": "בריא", "Más proteínas y comidas equilibradas.": "יותר חלבון וארוחות מאוזנות.", "Selecciona un objetivo para guardarlo en este navegador.": "בחרו מטרה לשמירה בדפדפן.", "Preferencia de dieta": "העדפת תזונה", "Selecciona los filtros que quieres considerar. La tabla muestra una referencia diaria estimada por persona.": "בחרו מסננים. הטבלה מציגה ערכים יומיים משוערים לאדם.", "Filtros de alimentación": "מסנני תזונה", "Vegetariana": "צמחוני", "Vegana": "טבעוני", "Baja en carbohidratos": "דל פחמימות", "Sin gluten": "ללא גלוטן", "Sin lactosa": "ללא לקטוז", "Referencia diaria aproximada · por persona": "המלצה יומית משוערת · לאדם", "Nutrimento": "רכיב תזונתי", "Referencia": "המלצה", "Calorías": "קלוריות", "Proteínas": "חלבון", "Carbohidratos": "פחמימות", "Grasas": "שומן", "Las cifras son orientativas y no sustituyen una recomendación nutricional personalizada.": "הנתונים להכוונה בלבד ואינם תחליף לייעוץ תזונתי אישי.",
+      "Menú semanal": "תפריט שבועי", "Desayuno, comida y cena para toda la semana. Elige entre más de 60 recetas y mantente cerca de tu presupuesto.": "ארוחת בוקר, צהריים וערב לכל השבוע. בחרו מתוך יותר מ־60 מתכונים ושמרו על התקציב.", "Generar otro menú": "יצירת תפריט נוסף", "Ajustar al presupuesto": "התאמה לתקציב",
+      "Lista de compras por tienda": "רשימת קניות לפי חנות", "Marca lo que ya compraste o ya tienes en casa: se pasará automáticamente a tu despensa y se descontará de lo que te falta pagar.": "סמנו מה כבר קניתם או יש בבית. הפריטים יתווספו למזווה ויופחתו מהעלות שנותרה.", "Copiar lista": "העתקת הרשימה", "Imprimir": "הדפסה", "Desmarcar todo": "ביטול כל הסימונים",
+      "Mi despensa y recetas recomendadas": "המזווה ומתכונים מומלצים", "Registra lo que compraste o tienes en la alacena. Priorizamos recetas con los ingredientes que se echan a perder primero.": "נהלו את המרכיבים בבית. המתכונים נותנים עדיפות למרכיבים שמתקלקלים בקרוב.", "Ingredientes disponibles": "מרכיבים זמינים", "Ingrediente": "מרכיב", "Cantidad": "כמות", "¿Cuánto dura?": "כמה זמן נשמר?", "Urgente (1 a 2 días)": "דחוף (יום עד יומיים)", "Pronto (3 a 5 días)": "בקרוב (3–5 ימים)", "Duradero (1 a 2 semanas)": "נשמר (1–2 שבועות)", "Alacena (más de 1 mes)": "מזווה (יותר מחודש)", "Agregar a mi despensa": "הוספה למזווה", "Recetas sugeridas con tu despensa": "מתכונים מהמרכיבים בבית", "Ordenadas primero por ingredientes que se echan a perder más rápido y luego por mayor coincidencia con tu alacena.": "ממוינים לפי מרכיבים שפג תוקפם קרוב והתאמה למזווה.",
+      "Platillos favoritos": "מאכלים אהובים", "Guarda los platillos que más le gustan a tu familia y consulta sugerencias inteligentes basadas en tu presupuesto y despensa.": "שמרו מאכלים אהובים וקבלו הצעות לפי התקציב והמזווה.", "Tus platillos favoritos": "המאכלים האהובים עליכם", "Asistente virtual": "עוזר וירטואלי", "Recibe ideas de menú, recetas para aprovechar tu despensa y consejos para cuidar el presupuesto.": "קבלו רעיונות לתפריט, מתכונים מהמרכיבים בבית וטיפים לתקציב.", "Ideas para tu cocina": "רעיונות למטבח", "Genera recomendaciones personalizadas con los datos de tu familia, tiendas y despensa. Asistente local de cocina: usa tus gustos, presupuesto, despensa y dieta para sugerir opciones.": "הצעות לפי הבית, החנויות, המזווה, התקציב והעדפות התזונה שלכם.", "Pedir sugerencias al asistente": "בקשת הצעות", "Ideas de menú": "רעיונות לתפריט", "Recetas con tu despensa": "מתכונים מהמזווה", "Consejos de ahorro": "טיפים לחיסכון",
+      "Configuración": "הגדרות", "Español": "ספרדית", "English": "אנגלית", "Modo oscuro": "מצב כהה", "Usa una paleta oscura en la aplicación.": "השתמשו בערכת צבעים כהה באפליקציה.", "Efectos de sonido": "אפקטים קוליים", "Tonos suaves al cambiar de sección y marcar ingredientes.": "צלילים עדינים במעבר בין חלקים ובסימון מרכיבים.", "Idioma": "שפה", "Hebreo (Israel)": "עברית (ישראל)", "Cerrar configuración": "סגירת הגדרות", "Reiniciar datos guardados": "איפוס הנתונים השמורים",
+      "Porciones:": "מנות:", "Tiempo:": "זמן:", "Costo estimado:": "עלות משוערת:", "Ingredientes escalados": "מרכיבים לפי הכמות", "Preparación rápida": "הכנה מהירה", "En despensa": "במזווה", "Aplicar cambio": "החלת שינוי", "Ver receta": "צפייה במתכון", "Quitar": "הסרה", "Desayuno": "ארוחת בוקר", "Comida": "ארוחת צהריים", "Cena": "ארוחת ערב", "persona": "אדם", "personas": "אנשים"
+    }
+  };
+
+  const terms = {
+    en: {
+      "Jitomate": "Tomato", "Tomate verde": "Tomatillo", "Cebolla blanca": "White onion", "Frijol cocido o refrito": "Cooked or refried beans", "Tortillas de maíz": "Corn tortillas", "Tortillas de harina": "Flour tortillas", "Huevo": "Egg", "Leche": "Milk", "Queso fresco": "Fresh cheese", "Queso Oaxaca": "Oaxaca cheese", "Queso panela": "Panela cheese", "Pechuga de pollo": "Chicken breast", "Muslo de pollo": "Chicken thigh", "Carne molida de res": "Ground beef", "Atún en lata": "Canned tuna", "Filete de pescado": "Fish fillet", "Papa blanca": "Potato", "Zanahoria": "Carrot", "Aguacate": "Avocado", "Plátano tabasco": "Banana", "Manzana": "Apple", "Arroz blanco": "White rice", "Lentejas": "Lentils", "Garbanzo cocido": "Cooked chickpeas", "Nopales frescos": "Fresh nopales", "Calabacita": "Zucchini", "Espinaca fresca": "Fresh spinach", "Lechuga romana": "Romaine lettuce", "Pepino": "Cucumber", "Champiñones": "Mushrooms", "Elote desgranado": "Corn kernels", "Cilantro": "Cilantro", "Limón": "Lime", "Pasta espagueti": "Spaghetti", "Sopa de fideo": "Vermicelli", "Pimiento morrón": "Bell pepper", "Col": "Cabbage", "Avena en hojuelas": "Rolled oats", "Yogur natural": "Plain yogurt", "Tostadas de maíz": "Corn tostadas", "Bolillo": "Mexican bread roll", "Pasta": "Pasta", "Verduras mixtas": "Mixed vegetables", "Queso manchego": "Manchego cheese", "Pan integral": "Whole-grain bread", "Chile poblano": "Poblano pepper", "Nueces": "Nuts", "Cacahuate": "Peanuts", "Semillas de chía": "Chia seeds", "Bebida de soya": "Soy milk", "Mango": "Mango", "Tofu": "Tofu", "Brócoli": "Broccoli", "Quinoa": "Quinoa", "Setas": "Oyster mushrooms", "Coliflor": "Cauliflower", "Poro": "Leek", "Calabaza": "Squash", "Fideos": "Noodles", "Jengibre": "Ginger", "Ajo": "Garlic", "Canela": "Cinnamon", "Curry": "Curry powder"
+    },
+    he: {
+      "Jitomate": "עגבנייה", "Tomate verde": "טומטיו", "Cebolla blanca": "בצל לבן", "Frijol cocido o refrito": "שעועית מבושלת או מטוגנת", "Tortillas de maíz": "טורטיות תירס", "Tortillas de harina": "טורטיות קמח", "Huevo": "ביצה", "Leche": "חלב", "Queso fresco": "גבינה טרייה", "Queso Oaxaca": "גבינת אואחאקה", "Queso panela": "גבינת פנלה", "Pechuga de pollo": "חזה עוף", "Muslo de pollo": "ירך עוף", "Carne molida de res": "בשר בקר טחון", "Atún en lata": "טונה משומרת", "Filete de pescado": "פילה דג", "Papa blanca": "תפוח אדמה", "Zanahoria": "גזר", "Aguacate": "אבוקדו", "Plátano tabasco": "בננה", "Manzana": "תפוח", "Arroz blanco": "אורז לבן", "Lentejas": "עדשים", "Garbanzo cocido": "חומוס מבושל", "Nopales frescos": "נופאלס טריים", "Calabacita": "קישוא", "Espinaca fresca": "תרד טרי", "Lechuga romana": "חסה רומית", "Pepino": "מלפפון", "Champiñones": "פטריות", "Elote desgranado": "גרגרי תירס", "Cilantro": "כוסברה", "Limón": "ליים", "Pasta espagueti": "ספגטי", "Sopa de fideo": "מרק אטריות", "Pimiento morrón": "פלפל מתוק", "Col": "כרוב", "Avena en hojuelas": "שיבולת שועל", "Yogur natural": "יוגורט טבעי", "Tostadas de maíz": "טוסטדות תירס", "Bolillo": "לחמנייה מקסיקנית", "Pasta": "פסטה", "Verduras mixtas": "ירקות מעורבים", "Queso manchego": "גבינת מנצ'גו", "Pan integral": "לחם מלא", "Chile poblano": "פלפל פובלנו", "Nueces": "אגוזים", "Cacahuate": "בוטנים", "Semillas de chía": "זרעי צ'יה", "Bebida de soya": "משקה סויה", "Mango": "מנגו", "Tofu": "טופו", "Brócoli": "ברוקולי", "Quinoa": "קינואה", "Setas": "פטריות אויסטר", "Coliflor": "כרובית", "Poro": "כרישה", "Calabaza": "דלעת", "Fideos": "אטריות", "Jengibre": "ג'ינג'ר", "Ajo": "שום", "Canela": "קינמון", "Curry": "קארי"
+    }
+  };
+
+  const sourceText = new WeakMap();
+  const sourceAttributes = new WeakMap();
+  let idiomaActual = "es";
+  const idiomaSelect = document.getElementById("selector-idioma");
+
+  function traducirCadena(texto) {
+    if (idiomaActual === "es") return texto;
+    const tabla = translationsForCurrentLanguage();
+    const llave = texto.trim();
+    if (tabla[llave]) return tabla[llave];
+    const cuenta = llave.match(/^(\d+) (persona|personas)$/);
+    if (cuenta) {
+      const n = Number(cuenta[1]);
+      if (idiomaActual === "en") return `${n} ${n === 1 ? "person" : "people"}`;
+      return `${n} ${n === 1 ? "אדם" : "אנשים"}`;
+    }
+    let resultado = texto;
+    const diccionarioTerminos = terms[idiomaActual] || {};
+    Object.keys(diccionarioTerminos).sort((a, b) => b.length - a.length).forEach((original) => {
+      resultado = resultado.split(original).join(diccionarioTerminos[original]);
+    });
+    return resultado;
+  }
+
+  function translationsForCurrentLanguage() { return idiomas[idiomaActual] || {}; }
+
+  function traducirNodoTexto(nodo) {
+    let registro = sourceText.get(nodo);
+    if (!registro || nodo.nodeValue !== registro.traducido) {
+      registro = { original: nodo.nodeValue, traducido: nodo.nodeValue };
+      sourceText.set(nodo, registro);
+    }
+    const original = registro.original;
+    const inicio = (original.match(/^\s*/) || [""])[0];
+    const final = (original.match(/\s*$/) || [""])[0];
+    const centro = original.slice(inicio.length, original.length - final.length || original.length);
+    const traducido = `${inicio}${traducirCadena(centro)}${final}`;
+    if (nodo.nodeValue !== traducido) nodo.nodeValue = traducido;
+    registro.traducido = traducido;
+  }
+
+  function traducirAtributos(elemento) {
+    ["placeholder", "title", "aria-label"].forEach((nombre) => {
+      if (!elemento.hasAttribute(nombre)) return;
+      let registros = sourceAttributes.get(elemento);
+      if (!registros) { registros = {}; sourceAttributes.set(elemento, registros); }
+      const actual = elemento.getAttribute(nombre);
+      if (!registros[nombre] || actual !== registros[nombre].traducido) {
+        registros[nombre] = { original: actual, traducido: actual };
+      }
+      const traducido = traducirCadena(registros[nombre].original);
+      if (actual !== traducido) elemento.setAttribute(nombre, traducido);
+      registros[nombre].traducido = traducido;
+    });
+  }
+
+  function traducirArbol(raiz) {
+    if (raiz.nodeType === Node.TEXT_NODE) { traducirNodoTexto(raiz); return; }
+    if (raiz.nodeType !== Node.ELEMENT_NODE && raiz !== document) return;
+    if (raiz.nodeType === Node.ELEMENT_NODE) traducirAtributos(raiz);
+    const walker = document.createTreeWalker(raiz, NodeFilter.SHOW_TEXT, {
+      acceptNode: (nodo) => nodo.parentElement?.closest("script, style, textarea") ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT
+    });
+    const nodos = [];
+    while (walker.nextNode()) nodos.push(walker.currentNode);
+    nodos.forEach(traducirNodoTexto);
+    if (raiz.querySelectorAll) raiz.querySelectorAll("[placeholder], [title], [aria-label]").forEach(traducirAtributos);
+  }
+
+  function aplicarIdioma(idioma) {
+    idiomaActual = ["es", "en", "he"].includes(idioma) ? idioma : "es";
+    document.documentElement.lang = idiomaActual === "he" ? "he" : idiomaActual;
+    document.documentElement.dir = idiomaActual === "he" ? "rtl" : "ltr";
+    document.body.classList.toggle("idioma-he", idiomaActual === "he");
+    if (idiomaSelect) idiomaSelect.value = idiomaActual;
+    traducirArbol(document);
+    try { localStorage.setItem(STORAGE_KEY, idiomaActual); } catch { /* preferencia opcional */ }
+  }
+
+  let idiomaGuardado = "es";
+  try { idiomaGuardado = localStorage.getItem(STORAGE_KEY) || "es"; } catch { /* idioma predeterminado */ }
+  idiomaSelect?.addEventListener("change", () => aplicarIdioma(idiomaSelect.value));
+  aplicarIdioma(idiomaGuardado);
+
+  const observer = new MutationObserver((cambios) => {
+    cambios.forEach((cambio) => {
+      if (cambio.type === "characterData") traducirNodoTexto(cambio.target);
+      else cambio.addedNodes.forEach((nodo) => traducirArbol(nodo));
+    });
+  });
+  observer.observe(document.body, { childList: true, subtree: true, characterData: true });
+})();
