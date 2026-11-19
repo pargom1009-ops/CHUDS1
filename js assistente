@@ -1,0 +1,203 @@
+/**
+ * asistente.js
+ * ---------------------------------------------------------------------------
+ * Módulo separado de sugerencias del Asistente virtual del Planeador de Comida y Despensa.
+ *
+ * En esta primera versión funciona en modo "ejemplo" (sin conexión externa)
+ * para que la página funcione de inmediato en cualquier navegador.
+ *
+ * Más adelante, cuando crees tu pequeño servidor en Node.js con la API de
+ * Claude (Anthropic), solo tendrás que cambiar MODO_ASISTENTE a "servidor"
+ * y apuntar URL_SERVIDOR_IA a tu servidor local o publicado.
+ */
+
+const AsistenteIA = (function () {
+  // Cambia a "servidor" cuando tengas listo tu servidor Node.js con Claude
+  const MODO_ASISTENTE = "ejemplo";
+
+  // Dirección de tu servidor propio (NUNCA pongas tu API key aquí en el navegador)
+  const URL_SERVIDOR_IA = "http://localhost:3001/api/asistente";
+
+  /**
+   * Construye el texto (prompt) que tu servidor enviará a Claude
+   * usando los datos reales capturados por la familia.
+   *
+   * @param {Object} datosFamilia
+   * @returns {string}
+   */
+  function construirPromptFamilia(datosFamilia) {
+    const {
+      presupuesto,
+      personas,
+      gustos,
+      restricciones,
+      dietas,
+      tiendas,
+      despensa
+    } = datosFamilia;
+
+    const listaDespensa = despensa.length
+      ? despensa
+          .map(
+            (item) =>
+              `- ${item.nombre} (${item.cantidad}, caduca en ~${item.diasCaducidad} días)`
+          )
+          .join("\n")
+      : "- Sin ingredientes registrados todavía";
+
+    return [
+      "Eres un asistente de nutrición y economía doméstica en México.",
+      `Presupuesto semanal: $${presupuesto} MXN.`,
+      `Integrantes de la familia: ${personas} personas.`,
+      `Gustos culinarios: ${gustos.length ? gustos.join(", ") : "variado"}.`,
+      `Restricciones o alergias (NO incluir): ${restricciones.length ? restricciones.join(", ") : "ninguna"}.`,
+      `Preferencias de dieta: ${dietas?.length ? dietas.join(", ") : "sin filtros"}. Si aparece vegana, no recomiendes ningún ingrediente ni platillo de origen animal.`,
+      `Tiendas disponibles: ${tiendas.length ? tiendas.join(", ") : "supermercado y mercado"}.`,
+      "Ingredientes actuales en despensa (priorizar los que caducan pronto):",
+      listaDespensa,
+      "",
+      "Devuelve un JSON con: resumen, sugerenciasMenu (5 ideas), recetasAprovechamiento (5 ideas) y consejosAhorro (al menos 5 consejos prácticos)."
+    ].join("\n");
+  }
+
+  /**
+   * Genera respuestas de ejemplo realistas en español con base en los datos
+   * de la familia, sin hacer llamadas de red.
+   *
+   * @param {Object} datosFamilia
+   * @returns {Object}
+   */
+  function generarRespuestaEjemplo(datosFamilia) {
+    const presupuesto = Number(datosFamilia.presupuesto) || 1500;
+    const personas = Number(datosFamilia.personas) || 4;
+    const presupuestoPorPersona = Math.round(presupuesto / personas);
+    const tiendas = datosFamilia.tiendas || [];
+    const dietas = datosFamilia.dietas || [];
+    const esVegana = dietas.includes("vegana");
+    const restricciones = (datosFamilia.restricciones || []).map((r) =>
+      r.toLowerCase()
+    );
+    const despensa = datosFamilia.despensa || [];
+
+    // Identificamos ingredientes urgentes (caducan en 3 días o menos)
+    const ingredientesUrgentes = despensa
+      .filter((item) => Number(item.diasCaducidad) <= 3)
+      .filter((item) => {
+        if (!esVegana) return true;
+        const nombre = String(item.nombre || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        return !/\b(huevo|leche|queso|yogur|pollo|pavo|res|cerdo|carne|atun|pescado|jamon|tocino|crema|mantequilla|miel|mariscos?)\b/.test(nombre);
+      });
+    const urgentes = ingredientesUrgentes.map((item) => item.nombre);
+
+    const evitarCarne =
+      restricciones.includes("res") && restricciones.includes("cerdo");
+    const evitarLacteos = restricciones.includes("lacteos");
+    const evitarMariscos = restricciones.includes("mariscos");
+
+    const sugerenciasMenu = esVegana
+      ? [
+          `Lentejas guisadas con verduras y arroz, rendidoras para ${personas} personas.`,
+          "Calabacitas a la mexicana con elote, arroz y tortillas de maíz.",
+          "Tostadas de frijoles con nopales, jitomate y aguacate.",
+          "Tacos de setas con cebolla, cilantro y salsa verde.",
+          "Bowl de garbanzos, quinoa y verduras de temporada."
+        ]
+      : [
+          evitarCarne
+            ? `Tinga de setas o pollo deshebrado en tostadas horneadas (rinde excelente para ${personas} personas).`
+            : `Arroz a la mexicana acompañado de lentejas guisadas y pollo en salsa verde (económico y rendidor para ${personas} personas).`,
+          evitarLacteos
+            ? "Sopa de verduras de temporada con garbanzo y tortillas de maíz (sin lácteos y muy nutritiva)."
+            : "Calabacitas a la mexicana con elote y un poco de queso fresco rallado.",
+          evitarMariscos
+            ? "Tacos dorados de papa con zanahoria y ensalada de lechuga fresca."
+            : "Tortitas de atún con papa acompañadas de ensalada verde con limón.",
+          "Pollo al horno con papas y verduras de temporada.",
+          "Sopa de lentejas con arroz y una ensalada sencilla para acompañar."
+        ];
+
+    const recetasAprovechamiento = urgentes.length
+      ? [
+          `Salteado rápido con ${urgentes.slice(0, 2).join(" y ")}, arroz y especias.`,
+          `Sopa casera para integrar ${urgentes[0]} antes de que pierda frescura.`,
+          esVegana
+            ? `Tostadas de frijoles o tacos de verduras para aprovechar ${urgentes.join(", ")}.`
+            : `Cena ligera tipo molletes, sincronizadas o huevos revueltos incorporando ${urgentes.join(", ")}.`,
+          `Prepara una ensalada o salsa fresca con ${urgentes.slice(0, 2).join(" y ")}.`,
+          `Cocina ${urgentes[0]} con arroz o leguminosas para rendir más porciones.`
+        ]
+      : [
+          "Registra en tu despensa frutas o verduras que estén por madurar para sugerirte recetas de rescate.",
+          "Prepara una base de caldillo de jitomate y cebolla el domingo para ahorrar tiempo en 3 comidas.",
+          "Cuece 1 kg de frijoles de la olla al inicio de la semana para acompañar desayunos y cenas.",
+          "Usa verduras sobrantes en una sopa, salteado o relleno de tacos.",
+          "Combina arroz cocido con verduras y una proteína para una comida rápida."
+        ];
+
+    const compraEnMercado =
+      tiendas.includes("Tianguis") || tiendas.includes("Mercado");
+
+    const consejosAhorro = [
+      `Tu presupuesto equivale a ~$${presupuestoPorPersona} MXN por persona a la semana. Prioriza proteína combinada con leguminosas (frijol, lenteja, garbanzo).`,
+      compraEnMercado
+        ? "Aprovecha el mercado o tianguis para fruta, verdura y hierbas; deja solo abarrotes y básicos en el súper."
+        : "Si puedes agregar un mercado o tianguis local para verduras de temporada, podrías ahorrar entre 15% y 25%.",
+      esVegana
+        ? "Combina frijoles, lentejas y garbanzos; compra leguminosas y arroz a granel para estirar el gasto."
+        : "Cambia pechuga por muslo o pierna de pollo y compra arroz o avena a granel para estirar el gasto semanal.",
+      "Planea dos comidas que compartan verduras o una base de arroz para aprovechar cada compra.",
+      "Compara el precio por kilo y elige frutas y verduras de temporada.",
+      "Congela porciones extra para evitar desperdiciar ingredientes."
+    ];
+
+    return {
+      origen: "ejemplo",
+      resumen: `Plan sugerido para ${personas} personas con presupuesto de $${presupuesto.toLocaleString("es-MX")} MXN${esVegana ? " · menú vegano, sin ingredientes de origen animal" : ""}${restricciones.length ? ` (evitando: ${restricciones.join(", ")})` : ""}.`,
+      sugerenciasMenu,
+      recetasAprovechamiento,
+      consejosAhorro,
+      promptEjemplo: construirPromptFamilia(datosFamilia)
+    };
+  }
+
+  /**
+   * Función principal que consume app.js.
+   * Recibe el presupuesto, personas, gustos, restricciones, tiendas y despensa,
+   * y devuelve una Promesa con sugerencias de menú y recetas.
+   *
+   * @param {Object} datosFamilia
+   * @returns {Promise<Object>}
+   */
+  async function obtenerSugerencias(datosFamilia) {
+    if (MODO_ASISTENTE === "servidor") {
+      const respuesta = await fetch(URL_SERVIDOR_IA, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(datosFamilia)
+      });
+
+      if (!respuesta.ok) {
+        throw new Error(
+          `No se pudo conectar con el servidor de IA (código ${respuesta.status}).`
+        );
+      }
+
+      return await respuesta.json();
+    }
+
+    // Simulación breve para emular una llamada asíncrona real
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(generarRespuestaEjemplo(datosFamilia));
+      }, 220);
+    });
+  }
+
+  // Exponemos solo las funciones necesarias
+  return {
+    obtenerSugerencias,
+    construirPromptFamilia
+  };
+})();
