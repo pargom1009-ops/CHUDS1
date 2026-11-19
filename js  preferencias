@@ -1,0 +1,204 @@
+/** Guarda las preferencias y aplica la apariencia del objetivo activo. */
+(() => {
+  const KEY = "planeadorPreferenciasAlimentacion";
+  const objetivos = [...document.querySelectorAll("[data-objetivo]")];
+  const filtros = [...document.querySelectorAll('input[name="filtro-dieta"]')];
+  const estadoObjetivo = document.getElementById("estado-objetivo");
+  const estadoDieta = document.getElementById("estado-dieta");
+  const leer = () => {
+    try { return JSON.parse(localStorage.getItem(KEY)) || { objetivo: "", dietas: [] }; }
+    catch { return { objetivo: "", dietas: [] }; }
+  };
+  const guardar = (valor) => {
+    try { localStorage.setItem(KEY, JSON.stringify(valor)); } catch { /* almacenamiento opcional */ }
+  };
+  const preferencias = leer();
+
+  function aplicarObjetivo(valor) {
+    document.body.classList.toggle("modo-ahorro-activo", valor === "ahorro");
+    document.body.classList.toggle("modo-antojos-activo", valor === "antojos");
+    document.body.classList.toggle("modo-saludable-activo", valor === "saludable");
+    objetivos.forEach((boton) => boton.setAttribute("aria-pressed", String(boton.dataset.objetivo === valor)));
+  }
+
+  aplicarObjetivo(preferencias.objetivo);
+  const actual = objetivos.find((boton) => boton.dataset.objetivo === preferencias.objetivo);
+  if (actual && estadoObjetivo) estadoObjetivo.textContent = `Objetivo guardado: ${actual.querySelector("strong").textContent}.`;
+
+  objetivos.forEach((boton) => boton.addEventListener("click", () => {
+    preferencias.objetivo = boton.dataset.objetivo;
+    guardar(preferencias);
+    aplicarObjetivo(preferencias.objetivo);
+    if (estadoObjetivo) estadoObjetivo.textContent = `Objetivo guardado: ${boton.querySelector("strong").textContent}.`;
+    // El menú se recalcula con el presupuesto y el nuevo objetivo seleccionados.
+    if (typeof generarMenuSemanal === "function" && typeof renderTodo === "function") {
+      generarMenuSemanal(false);
+      renderTodo();
+    }
+  }));
+
+  filtros.forEach((filtro) => {
+    filtro.checked = (preferencias.dietas || []).includes(filtro.value);
+    filtro.addEventListener("change", () => {
+      preferencias.dietas = filtros.filter((item) => item.checked).map((item) => item.value);
+      guardar(preferencias);
+      if (typeof generarMenuSemanal === "function" && typeof renderTodo === "function") {
+        generarMenuSemanal(false);
+        renderTodo();
+      }
+      if (estadoDieta) estadoDieta.textContent = preferencias.dietas.length
+        ? `Filtros guardados: ${filtros.filter((item) => item.checked).map((item) => item.parentElement.textContent.trim()).join(", ")}. Las cifras son orientativas y no sustituyen una recomendación nutricional personalizada.`
+        : "Las cifras son orientativas y no sustituyen una recomendación nutricional personalizada.";
+    });
+  });
+  if (preferencias.dietas?.length && estadoDieta) {
+    estadoDieta.textContent = `Filtros guardados: ${filtros.filter((item) => item.checked).map((item) => item.parentElement.textContent.trim()).join(", ")}. Las cifras son orientativas y no sustituyen una recomendación nutricional personalizada.`;
+  }
+
+  // La versión moderna usa animaciones ligadas al scroll en CSS (sin medir/recalcular el panel en cada cuadro).
+  // En navegadores antiguos, usa dos umbrales separados para evitar que el resumen parpadee.
+  const resumen = document.querySelector(".panel-resumen");
+  const soportaScrollTimeline = window.CSS?.supports?.("animation-timeline: scroll()");
+  if (resumen && !soportaScrollTimeline) {
+    let compacto = false;
+    const revisarCompactacion = () => {
+      if (!compacto && window.scrollY > 170) compacto = true;
+      else if (compacto && window.scrollY < 24) compacto = false;
+      resumen.classList.toggle("resumen-fallback-compacto", compacto);
+    };
+    window.addEventListener("scroll", revisarCompactacion, { passive: true });
+    revisarCompactacion();
+  }
+
+  // Actualiza la pestaña seleccionada al deslizar entre las cinco vistas.
+  const slider = document.getElementById("slider-vistas");
+  const vistas = ["familia", "menu", "compras", "despensa", "asistente"];
+  let sincronizando = false;
+  let vistaAnimadaAnterior = document.querySelector(".pestana.activa")?.dataset.vista || "familia";
+  if (preferencias.dietas?.length) {
+    document.addEventListener("DOMContentLoaded", () => {
+      if (typeof generarMenuSemanal === "function" && typeof renderTodo === "function") {
+        generarMenuSemanal(false);
+        renderTodo();
+      }
+    }, { once: true });
+  }
+
+  // Configuración compacta: guardar y aplicar únicamente el modo oscuro.
+  const configDialog = document.getElementById("dialog-configuracion");
+  const configButton = document.getElementById("btn-configuracion");
+  const closeConfigButton = document.getElementById("btn-cerrar-configuracion");
+  const darkModeToggle = document.getElementById("toggle-modo-oscuro");
+  const paletteSelector = document.getElementById("selector-paleta");
+  const DARK_KEY = "planeadorModoOscuro";
+  function aplicarModoOscuro(activo) {
+    document.body.classList.toggle("modo-oscuro", activo);
+    if (darkModeToggle) darkModeToggle.checked = activo;
+    try { localStorage.setItem(DARK_KEY, String(activo)); } catch { /* preferencia opcional */ }
+  }
+  let modoOscuroGuardado = false;
+  try { modoOscuroGuardado = localStorage.getItem(DARK_KEY) === "true"; } catch { /* preferencia opcional */ }
+  aplicarModoOscuro(modoOscuroGuardado);
+  const PALETTE_KEY = "planeadorPaletaFondo";
+  function aplicarPaleta(valor) {
+    const paletas = ["salvia", "arena", "lavanda", "cielo"];
+    const seleccionada = paletas.includes(valor) ? valor : "salvia";
+    document.body.classList.remove(...paletas.map((nombre) => `paleta-${nombre}`));
+    document.body.classList.add(`paleta-${seleccionada}`);
+    if (paletteSelector) paletteSelector.value = seleccionada;
+    try { localStorage.setItem(PALETTE_KEY, seleccionada); } catch { /* preferencia opcional */ }
+  }
+  let paletaGuardada = "salvia";
+  try { paletaGuardada = localStorage.getItem(PALETTE_KEY) || "salvia"; } catch { /* preferencia opcional */ }
+  aplicarPaleta(paletaGuardada);
+  paletteSelector?.addEventListener("change", () => aplicarPaleta(paletteSelector.value));
+  configButton?.addEventListener("click", () => configDialog?.showModal());
+  closeConfigButton?.addEventListener("click", () => configDialog?.close());
+  darkModeToggle?.addEventListener("change", () => aplicarModoOscuro(darkModeToggle.checked));
+  configDialog?.addEventListener("click", (evento) => {
+    if (evento.target === configDialog) configDialog.close();
+  });
+
+  // Tonos breves sintetizados con Web Audio; no descarga archivos de sonido.
+  const SOUND_KEY = "planeadorEfectosSonido";
+  const soundToggle = document.getElementById("toggle-efectos-sonido");
+  let sonidoActivo = true;
+  try { sonidoActivo = localStorage.getItem(SOUND_KEY) !== "false"; } catch { /* sonido activado por defecto */ }
+  if (soundToggle) soundToggle.checked = sonidoActivo;
+  let contextoAudio = null;
+  window.reproducirSonidoUI = (tipo = "seccion") => {
+    if (!sonidoActivo) return;
+    const AudioContextUI = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContextUI) return;
+    try {
+      contextoAudio ||= new AudioContextUI();
+      if (contextoAudio.state === "suspended") contextoAudio.resume();
+      const tonos = tipo === "check" ? [[880, 0]] : tipo === "plan" ? [[523, 0], [659, .055], [784, .11]] : [[659, 0], [784, .055]];
+      tonos.forEach(([frecuencia, retraso]) => {
+        const inicio = contextoAudio.currentTime + retraso;
+        const oscilador = contextoAudio.createOscillator();
+        const volumen = contextoAudio.createGain();
+        oscilador.type = "sine";
+        oscilador.frequency.setValueAtTime(frecuencia, inicio);
+        volumen.gain.setValueAtTime(.0001, inicio);
+        volumen.gain.exponentialRampToValueAtTime(.025, inicio + .012);
+        volumen.gain.exponentialRampToValueAtTime(.0001, inicio + .11);
+        oscilador.connect(volumen);
+        volumen.connect(contextoAudio.destination);
+        oscilador.start(inicio);
+        oscilador.stop(inicio + .12);
+      });
+    } catch { /* Audio opcional, continúa la interacción aunque el navegador lo bloquee. */ }
+  };
+  soundToggle?.addEventListener("change", () => {
+    sonidoActivo = soundToggle.checked;
+    try { localStorage.setItem(SOUND_KEY, String(sonidoActivo)); } catch { /* preferencia opcional */ }
+  });
+
+  // Usa el desplazamiento nativo del navegador para evitar saltos entre cuadros.
+  window.subirPaginaSuave = () => {
+    if (window.scrollY < 2) return;
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const botonPlanear = document.getElementById("btn-generar-header");
+  if (botonPlanear) botonPlanear.addEventListener("click", () => {
+    window.reproducirSonidoUI?.("plan");
+    botonPlanear.classList.remove("aura-activa");
+    void botonPlanear.offsetWidth;
+    botonPlanear.classList.add("aura-activa");
+    window.setTimeout(() => botonPlanear.classList.remove("aura-activa"), 1000);
+  });
+
+  if (slider) {
+    slider.addEventListener("scroll", () => {
+      if (sincronizando) return;
+      sincronizando = true;
+      window.requestAnimationFrame(() => {
+        const indice = Math.max(0, Math.min(vistas.length - 1, Math.round(slider.scrollLeft / slider.clientWidth)));
+        const vistaActiva = vistas[indice];
+        if (vistaActiva !== vistaAnimadaAnterior) {
+          const pagina = document.getElementById(`seccion-${vistaActiva}`);
+          if (pagina) {
+            pagina.classList.remove("vista-animando");
+            void pagina.offsetWidth;
+            pagina.classList.add("vista-animando");
+            pagina.addEventListener("animationend", () => pagina.classList.remove("vista-animando"), { once: true });
+          }
+          vistaAnimadaAnterior = vistaActiva;
+          window.subirPaginaSuave?.();
+          window.reproducirSonidoUI?.("seccion");
+        }
+        document.querySelectorAll(".pestana[data-vista]").forEach((boton) => {
+          const activa = boton.dataset.vista === vistaActiva;
+          boton.classList.toggle("activa", activa);
+          boton.setAttribute("aria-selected", String(activa));
+        });
+        document.querySelectorAll(".seccion-vista").forEach((seccion) => {
+          seccion.classList.toggle("activa", seccion.id === `seccion-${vistaActiva}`);
+        });
+        sincronizando = false;
+      });
+    }, { passive: true });
+  }
+})();
