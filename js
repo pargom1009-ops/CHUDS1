@@ -1165,23 +1165,38 @@ function cambiarVista(nombreVista) {
 /**
  * Actualiza el panel superior de presupuesto semanal y alertas.
  */
+function actualizarTextoConPulso(el, nuevoTexto) {
+  if (!el) return;
+  const anterior = el.dataset.ultimoValor;
+  el.textContent = nuevoTexto;
+  el.dataset.ultimoValor = nuevoTexto;
+  if (anterior !== undefined && anterior !== nuevoTexto) {
+    el.classList.remove("valor-actualizado");
+    void el.offsetWidth;
+    el.classList.add("valor-actualizado");
+  }
+}
+
 function renderResumenPresupuesto() {
   const { totalGeneral } = construirListaCompras();
   const presupuesto = Number(estado.perfil.presupuesto) || 0;
   const diferencia = presupuesto - totalGeneral;
   const porcentaje = presupuesto > 0 ? Math.min(100, Math.round((totalGeneral / presupuesto) * 100)) : 0;
 
-  document.getElementById("resumen-presupuesto").textContent = formatearMXN(presupuesto);
-  document.getElementById("resumen-costo").textContent = formatearMXN(totalGeneral);
-  document.getElementById("resumen-personas").textContent =
-    `${estado.perfil.personas} ${estado.perfil.personas === 1 ? "persona" : "personas"}`;
+  actualizarTextoConPulso(document.getElementById("resumen-presupuesto"), formatearMXN(presupuesto));
+  actualizarTextoConPulso(document.getElementById("resumen-costo"), formatearMXN(totalGeneral));
+  actualizarTextoConPulso(
+    document.getElementById("resumen-personas"),
+    `${estado.perfil.personas} ${estado.perfil.personas === 1 ? "persona" : "personas"}`
+  );
 
   const elDif = document.getElementById("resumen-diferencia");
-  elDif.textContent = diferencia >= 0
+  const textoDif = diferencia >= 0
     ? `Te sobran ${formatearMXN(diferencia)}`
     : `Te pasas por ${formatearMXN(Math.abs(diferencia))}`;
   elDif.className = "metrica__valor numero " +
     (diferencia >= 0 ? "metrica__valor--exito" : "metrica__valor--peligro");
+  actualizarTextoConPulso(elDif, textoDif);
 
   const barra = document.getElementById("barra-presupuesto");
   barra.style.width = `${porcentaje}%`;
