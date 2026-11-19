@@ -1,2 +1,0 @@
-# CHUDS1
-MVP
